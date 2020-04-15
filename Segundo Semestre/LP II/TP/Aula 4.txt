@@ -1,0 +1,7 @@
+Coleções de dados
+	Arrays - 	int ai[]= new int[4];
+			Point ap[]=new Point[4];
+É preciso declarar, criar e preecher cada array 
+	Vector & Array list
+		ex: private Arraylist<Grade> grades;
+Garbage collector: É uma thread que limpa a memória que já não está a ser utilizada(faz o free automaticamente)

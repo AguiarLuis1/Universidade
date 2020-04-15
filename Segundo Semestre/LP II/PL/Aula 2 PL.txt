@@ -1,0 +1,6 @@
+Ferramentas e Tecnologia JAVA
+-> javac - compilador que gera o bytecode
+-> interpretador(JDM) - carrega e executa as classes JAVA e mapeia instruções bytecode em intruções máquina 
+-> javadoc - ferramenta para a criação de documentação de pacotes, classes, atributos e métodos JAVA a partir do
+processamento de código fonte com comentários num formato adequado
+->jar - gera um ficheiro comprimido .jar com as várias classes a serem distribuidas

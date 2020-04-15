@@ -1,0 +1,37 @@
+entrar numa db: psql -U myuser ficha3
+
+ver tabelas: \d
+
+ver todos as bd psql -U myuser -l
+
+criar tabela: bd=> create table disciplina (id serial, numero int, nome text, descricao text, ects int, primary
+key(id));
+	-- serial: contador auto-incrementado
+	-- text: texto de comprimento variável
+	-- int: número inteiro em 4-bytes
+	-- date: data no formato ISO (aaaa-mm-dd) 
+
+meter na base de dados: insert into disciplina (nome, descricao, ects) values ('Bases de Dados', 'Fundamentos dos
+SGBD', 5);
+
+ver tabela: SELECT * FROM table_name;
+
+apagar elemento: delete from aluno where numero=123;
+
+listar ordenadamente: select*from aluno order by numero;
+
+dar update: update aluno set nome='paula' where numero=456;
+
+adicionar coluna: alter table aluno add column curso integer;
+
+guardar db em ficheiro (tem de ser fora da bd): pg_dump -Ox -Umyuser mydatabase > db.sql
+
+add unique: alter table aluno add unique(numero);
+
+drop rest: alter table aluno drop constraint aluno_data_nascimento_check;
+
+time: alter table aluno add columns time timestamp default now();
+
+Trigger - CREATE TRIGGER nome timing operação ON tabela FOR EACH row declaraçoes
+timing = before | after
+operação = insert |update|delete

@@ -1,0 +1,29 @@
+Chamadas ao Sistema para a Gestão de Processos:
+fork()->Duplica um processo.
+	Cria um novo processo que é uma cópia do processo original(pai)
+exit()->Termina um processo
+	É armazenado no núcleo do S.O. o código de finalização do processo que deve ser recolhido pelo processo PAI
+wait(),waitpid()->Bloqueia o processo até que um dos seus filhos(wait()) ou um filho específico(waitpid()) termine
+
+Familia de chamadas ao sistema 
+execX(v,l)X(e,p)
+	v->Variable parameters
+	l->line parameters
+	e->environment variables
+	p->path
+
+#ls -al
+execlp("/bin/ls","ls","-al",NULL)
+char **argv
+argv[0]="ls";
+argv[1]="-al";
+argv[2]="NULL";
+
+execvp("/bin/ls",argv);
+
+Sinais
+Cada processo possui uma "Máscara de Sinais"
+Trata-se de um conjunto de bits que indicam se um o processo recebeu(1) ou não(0) um sinal de cada um dos tipos de 
+sinais disponíveis.(faz parte do objeto processo)
+
+		

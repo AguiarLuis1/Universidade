@@ -1,0 +1,41 @@
+13StacksAndQueues
+Tipo Abstrato de Dados(TAD) ou Abstract Data Type(ADT)
+-> Todos os tipos abstratos de dados que vamos falar são coleções de dados ou objetos ou items
+-> Abstração de um tipo/modelo de dados que oferece um modo de utilização, isto é, funções ou operações
+-> Queues(Filas) - Enqueue(colocar na fila), dequeue(tirar da fila)
+-> Stacks(Pilhas) - Push(pôr na stack), pop(tirar da stack)
+-> Sets(Conjuntos) 
+-> Bags(Sacos)
+Programa para imprimir o programa da cauda para a cabeça
+void print_cauda_to_cabeca(){
+int q[8]={8,16,0,0,0,0,10,12};
+int h=1,t=6,i;//h=cabeça, t=cauda
+printf("Queue\n(T)");
+i=t;
+while(i!=h){
+	printf("%d",q[i]);
+	i=(i+1)%8;
+}
+printf("%d (H)",q[i]);
+}
+
+Resizing Array em Stack(Pilha)
+Fator de Carga(0 até 1)=N(nº de elementos)/SZ(capacidade do array)
+-> Dobrar o tamanho do array 	|->Passar para metade do tamanho
+quando este estiver a 100%	|quando o array estiver a 25%
+(fator de carga=1)		|(fator de carga=0.25)
+SZ=2*SZ				|SZ=SZ/2
+
+Fila(Queue) implementada c/um array resizable usa a mesma estratégia que uma pilha(Stack)
+
+Simular o estado de um array resizable com SZ=4(inicial) para as seguintes operações numa fila de inteiros:
+10,20,03,*,40,25,35,*(*=remoção)
+10:10h,_t,_,_
+20:10h,20,_t,_
+30:10h,20,30,_t
+*(remover o 10(head)):/,20h,30,_t
+40:t/,20h,30,40
+Fator de carga=1->25:25,20ht,30,40
+35:20h,30,40,25,35,_t,_,_Dobra-se o tamanho do array
+*(remover o 20(head)):/,30h,40,25,35,_t,_,_
+

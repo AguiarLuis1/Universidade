@@ -1,0 +1,167 @@
+1
+a)As chamadas ao sistema execl e execv são da função da família exec
+execlp()- leva como parametros o path e um conjunto indeterminado de argumentos e acaba em NULL 
+execvp()- leva como parametros o path e um array argv
+b)
+c)Essa mensagem só imprime se o execlp() falhar ou seja se o path não existir, de outra forma não irá imprimir nada que é o que
+acontece neste caso
+2
+void exec2()
+{
+    char path[256];
+    char command[256]="";
+    int status;
+    while (1)
+    {
+
+        getcwd(path,256);
+        printf("%s ",path);
+
+        fgets(command,256,stdin);
+        command[strlen(command)-1]='\0';
+
+        char **params=parse_args(command);
+
+        pid_t pid=fork();
+        if (pid < 0)
+        {
+            printf ("Unable to fork");
+            continue;
+        }
+        if (pid !=0)
+        {
+            waitpid(pid, &status,0);
+        }
+        else
+        {
+            execvp (params[0], params);
+            perror("");
+            exit(-1);
+        }
+    }
+}
+
+char ** parse_args(char*buff)
+{
+    char **args=(char**)malloc(sizeof(char*));
+    char *aux;
+    int i=0;
+    aux=strtok(buff," ");
+    while(aux!=NULL)
+    {
+        args=(char**)realloc(args,i+2);
+        args[i]=(char*)malloc(sizeof(char)*(strlen(aux)+1));
+        strcpy(args[i],aux);
+        aux=strtok(NULL," ");
+        i++;
+    }
+    args[i]=NULL;
+    return args;
+}
+3
+a)O processo filho recebe e executa o sinal enviado pelo processo pai
+
+b)
+kill- esta chamada envia um sinal ao processo
+signal- permite definir uma rotina de atendimento para um determinado sinal(instala o handler)
+
+b)(Ficha em Inglês) 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
+void sighup(); /* routines child will call upon sigtrap */
+void sigint();
+void sigquit();
+
+int main()
+{ 
+	int pid;
+	
+	
+	/* get child process */
+	
+	if ((pid = fork()) < 0) {
+        perror("fork");
+        exit(1);
+    }
+  
+    
+	if (pid == 0)
+	{ /* child */
+		struct sigaction sa_sighup, sa_sigint, sa_sigquit;
+		sa_sighup.sa_handler=&sighup;
+		sa_sigint.sa_handler=&sigint;
+		sa_sigquit.sa_handler=&sigquit;
+		
+		sigaction(SIGHUP,&sa_sighup,NULL); /* set function calls */
+		sigaction(SIGINT,&sa_sigint,NULL);
+		sigaction(SIGQUIT, &sa_sigquit,NULL);
+		for(;;); /* loop for ever */
+	}
+	else /* parent */
+	{  /* pid hold id of child */
+		sleep(3);
+		printf("\nPARENT: sending SIGHUP\n\n");
+		kill(pid,SIGHUP);
+		sleep(3); /* pause for 3 secs */
+		printf("\nPARENT: sending SIGINT\n\n");
+		kill(pid,SIGINT);
+		sleep(3); /* pause for 3 secs */
+		printf("\nPARENT: sending SIGQUIT\n\n");
+		kill(pid,SIGQUIT);
+		sleep(3);
+	}
+	return 0;
+}
+
+void sighup()
+
+{  
+	printf("CHILD: I have received a SIGHUP\n");
+}
+
+void sigint()
+
+{ 
+	printf("CHILD: I have received a SIGINT\n");
+}
+
+void sigquit()
+
+{ 
+	printf("My DADDY has Killed me!!!\n");
+	exit(0);
+}
+
+c)
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
+void sigint();
+
+int main()
+{ 
+
+		struct sigaction sa_sigint;
+		sa_sigint.sa_handler=&sigint;
+	
+		sigaction(SIGINT,&sa_sigint,NULL);
+		for(;;); /* loop for ever */
+	return 0;
+}
+
+void sigint()
+
+{ 
+	printf("Recebi um CTRL+c\n");
+}
+
+d) Não, isto acontece porque nem SIGKILL nem o SIGSTOP podem ser tratados, ou seja, não podem ser ignorados
+
+e) O programa não para instalar a mesma rotina para o sinal SIGTSTP, é preciso recorrer ao kill -9
+
+

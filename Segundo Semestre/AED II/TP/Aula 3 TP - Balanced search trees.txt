@@ -1,0 +1,8 @@
+2-3 trees não costumam sair nos testes, só são analisadas do ponto de vista teórico
+Red Black BST são as que costumam sair mais
+
+LLRB tem 3 operações elementares de manutenção(a serem executadas nos nós):
+-Rotate Left(RL)
+-Rotate Right(RR)
+-Flip Colors(FC)
+

@@ -1,0 +1,4 @@
+Loop:	lw $2,100($3)
+	addi $3,$3,4
+	beq $3,$4, Loop
+	nop

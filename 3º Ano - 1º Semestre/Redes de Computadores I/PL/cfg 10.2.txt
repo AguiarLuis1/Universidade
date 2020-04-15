@@ -1,0 +1,97 @@
+!SWITCH1
+en
+
+conf t
+vlan 10
+name STAFF
+vlan 20
+name STUDENT
+exit
+int g0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+int g0/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+int g2/3
+switchport trunk encapsulation dot1q
+switchport mode trunk
+int vlan1
+no shut
+ip add 172.17.1.1 255.255.255.0
+
+end 
+wr
+
+!SWITCH2
+en
+
+conf t
+vlan 10
+name STAFF
+vlan 20
+name STUDENT
+exit
+int g0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+int g0/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+int g2/3
+switchport access vlan 20
+int g2/2
+switchport access vlan 20
+int g2/1
+switchport access vlan 20
+
+int vlan1
+no shut
+ip add 172.17.1.2 255.255.255.0
+
+end 
+wr
+
+!SWITCH3
+en
+
+conf t
+vlan 10
+name STAFF
+vlan 20
+name STUDENT
+exit
+int g0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+int g0/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+int g2/3
+switchport access vlan 20
+
+int vlan1
+no shut
+ip add 172.17.1.2 255.255.255.0
+
+end 
+wr
+
+!ROUTER
+en
+
+conf t
+int g0/0
+no shut
+int g0/0.10
+encapsulation dot1q 10
+ip add 172.17.10.254 255.255.255.0
+int g0/0.20
+encapsulation dot1q 20
+ip add 172.17.20.254 255.255.255.0
+no shut
+
+end
+we

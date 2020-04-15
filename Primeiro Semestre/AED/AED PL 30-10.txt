@@ -1,0 +1,27 @@
+typedef struct StackLinkerChar_Node {//lista ligada
+    char item;
+    struct StackLinkedChar_Node *next;//um apontador para a proxima lista
+}SLNODE;
+int isEmpty_StackLinkerChar(SLNODE *first);
+void push_StaclLinkerChar(SLNODE **first, char item);
+char pop_StackLinkedListChars(SLNODE **first);
+int main() {
+
+    return 0;
+}
+int isEmpty_StackLinkerChar(SLNODE *first){//verifica que a stack está vazia
+    return first==NULL;
+}
+void push_StaclLinkerChar(SLNODE **first, char item){//Adicionar á stack(adiciona-se por cima)
+    SLNODE *oldfirst=*first;
+    (*first)=malloc(sizeof(SLNODE));
+    (*first)->item=item;
+    (*first)->next=oldfirst;
+}
+char pop_StackLinkedListChars(SLNODE **first){//dá pop do ultimo elemento
+    SLNODE *oldfirst=*first;
+    char item=(*first)->item;
+    (*first)=(*first)->next;
+    free(oldfirst);
+    return item;
+}

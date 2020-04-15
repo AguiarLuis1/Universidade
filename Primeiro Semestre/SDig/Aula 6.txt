@@ -1,0 +1,14 @@
+Projeto de Sistemas digitais e análise de 1 sistema/circuito digital
+
+Enunciado do problema a solucionar: Entradas-Variaveis independente Saidas-Funções das variaveis independentes
+.	/\
+.	.
+v	.
+Tabela de verdade: Todas as combinações possiveis das entradas e valores lógicos das funções(saidas) respetivas
+.	/\
+.	.
+v	.
+Expressao algoritmica das funções:
+.	/\
+.	.
+v	.

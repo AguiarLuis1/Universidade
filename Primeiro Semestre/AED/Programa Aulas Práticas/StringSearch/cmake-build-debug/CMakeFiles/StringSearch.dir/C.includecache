@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Aguia/CLionProjects/StringSearch/main.c
+stdio.h
+-
+strings.h
+C:/Users/Aguia/CLionProjects/StringSearch/strings.h
+

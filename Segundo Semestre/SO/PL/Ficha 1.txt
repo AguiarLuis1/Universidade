@@ -1,0 +1,30 @@
+1- Mostra o manual do comando man
+2- mkdir exerc1
+3- cd exerc1 para mudarmos a diretoria corrente para exerc1.
+4- mkdir teste1 teste2
+5- cria 3 ficheiros, 1 chamado aa, outro bb e outro cc
+6- cp teste1/* teste2
+7- cp -r teste1 teste2
+8- cd teste1
+9- Primeiro executamos “ls -al” para verificar as permissões atuais.
+   Depois “chmod 600 aa” para apenas o dono ter permissão de leitura e escrita no ficheiro aa.
+10- “echo ls -l > myls” escreve “ls -l” no ficheiro que vai criar chamado myls.
+11- “cat myls” para verificar o conteúdo de myls.
+    “nano myls” para abrir o editor de texto da consola.
+12- O comando pc mostra os processos em execução
+13- Vai escrever os processos no ficheiro processos.
+14- Mostra as pastas dentro do directorio em que estamos
+15- A frase aparece 10 segundos depois
+16- Usa-se o '&' para executar em background.
+17- Ao fazer ps para verificarmos os processos aparece o processo sleep.
+18- Para matar o processo verificamos o número do mesmo  e fazemos “ kill numero do processo”.
+19- Usa-se o '&' para executar em background.
+20- sleep 240
+21- ^z para suspender o programa atual e bg para passá-lo para background.
+23- jobs mostra as tarefas em segundo plano
+24- fg para passar para foreground.
+25- kill numero do processo”.
+26- cd teste, nano
+27-grep * metacaracter - procura por tudo e grep '*' metacaracter - procura por *
+28- grep ‘caracter’ metacaracter
+29- Para remover o ficheiro usa-se o comando rm ./-menos

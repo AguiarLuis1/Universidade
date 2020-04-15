@@ -1,0 +1,31 @@
+C A B A C A A B A B A C C A
+0 0 1 2 3 0 1 1 2 3 4 5 6<- INDICA QUE HOUVE CORRESPONDÊNCIA
+Começa sempre a 0, e só se começa a preencher apartir da pos 1
+
+Construir a matriz a seguir
+Nº de colunas=M->tamanho do pradrão
+Nº de linhas=R->Tamanho do alfabeto usado
+
+   A B A B A C 
+A| 1 1 3 1 5 1
+B| 0 2 0 4 0 4
+C| 0 0 0 0 0 6
+
+Copiar os valores em falta na coluna j	--->	j| 1 2 3 4 5
+com os valores da coluna X	 	--->	X| 0 0 1 2 3 
+1º - Inicializar com X=0 e j=1
+2º - Enquanto j<M:
+	.copiar da coluna X para coluna j
+	.atualizar X=dfa[pat[j]][X]
+	.atualizar j=j+1
+Exemplo:
+R={a,b,c}
+pat="A A A A B"
+
+  A A A A B
+A 1 2 3 4 4
+B 0 0 0 0 5  
+C 0 0 0 0 0 
+
+j|1 2 3 4 
+X|0 1 2 3

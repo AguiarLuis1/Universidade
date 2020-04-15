@@ -1,0 +1,219 @@
+1
+b)
+Processo		Threads
+fork		<->	pthread_create	
+wait/waitpid	<->	pthread_join
+exit		<->	pthread_exit
+getpid		<->	pthread_self
+(comp. igual)	<->	pthread_equal
+
+c)
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+void* char_print()
+{
+	
+  printf("Hello World!\n");
+  printf("PID - %d\n",getpid());
+  printf("TID - %d\n",pthread_self());
+  
+
+  pthread_exit(NULL);
+}
+/* The main program.  */
+int main ()
+{
+  pthread_t thread1_id;
+  pthread_t thread2_id;
+  char * return_thread;
+
+	//primeiro thread
+  pthread_create (&thread1_id, NULL, &char_print, NULL);
+
+	//segundo thread 
+  pthread_create (&thread2_id, NULL, &char_print, NULL);
+  
+  /* Make sure the first thread has finished.  */
+  pthread_join (thread1_id, (void *)&return_thread);
+    
+  /* Make sure the second thread has finished.  */
+  pthread_join (thread2_id, (void *)&return_thread);
+
+  /* Now we can safely return.  */
+  return 0;
+}
+
+d)´
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void* fun_fact(void* arg)
+{
+	
+  int *prime_ptr = (int*)arg;//transformar um void* num int*
+  int prime=*prime_ptr;	//tirar o contudo do pointer para um int
+  int i;
+  
+  int fact=1;
+  //calc fact
+  for(i=2;i<=prime;i++){
+	  fact*=i;
+  }
+  *prime_ptr=fact; //alterar o valor no vetor
+	
+  pthread_exit(NULL);
+}
+/* The main program.  */
+int main ()
+{
+  pthread_t thread1_id;
+  pthread_t thread2_id;
+  int i;
+  
+  pthread_t threads[5]; //array com endereço dos 5 threads
+
+  int primes[5]={2,3,5,7,11};//array de primos(mais simples se esta fosse global)
+  
+	
+  for(i=0;i<5;i++)
+		pthread_create(&threads[i],NULL,&fun_fact,&primes[i]);
+  
+  for(i=0;i<5;i++)
+		pthread_join(threads[i],NULL);
+	
+	for(i=0;i<5;i++)
+		printf("[%d]->%d\n",i,primes[i]);
+
+  /* Now we can safely return.  */
+  return 0;
+}
+
+2
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define SIZE 6 
+
+int primes[SIZE]={2,3,5,7,11,13};
+int soma=0;
+void* sum(void* arg)
+{
+  int *ptr = (int*)arg;//transformar um void* num int*
+  int ch=*ptr;	//tirar o contudo do pointer para um int
+  int i;
+  if(ch==0){//par
+	  for(i=0;i<SIZE;i++){
+	  if(primes[i]%2==0){
+		soma+=primes[i];
+		primes[i]=0;
+      }
+  }
+ }
+   if(ch==1){//impar
+	  for(i=0;i<SIZE;i++){
+	  if(primes[i]%2!=0){
+		soma+=primes[i];
+		primes[i]=0;
+      }
+  }
+ }
+  
+}
+
+/* The main program.  */
+int main ()
+{
+  pthread_t thread1_id;
+  pthread_t thread2_id;
+  
+  int i;
+  
+  int pi[2]={0,1};//0=par, 1=impar
+  
+  pthread_t threads[2]; //array com endereço dos 2 threads
+	
+	for(i=0;i<2;i++)
+		pthread_create(&threads[i],NULL,&sum,&pi[i]);
+	
+  for(i=0;i<2;i++)
+		pthread_join(threads[i],NULL);
+
+	
+	printf("\nSoma= %d\n",soma);
+	
+	for(i=0;i<6;i++)
+		printf("[%d]->%d\n",i,primes[i]);
+
+  /* Now we can safely return.  */
+  return 0;
+}
+
+3
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define SIZE 2
+
+int m1[SIZE][SIZE]={{(-1),3},
+					{4,2}};
+int m2[SIZE][SIZE]={{1,2},
+					{3,4}};
+int mRes[SIZE][SIZE]={{0,0},
+					 {0,0}};
+int col=0;
+int line=0;
+		
+void* mult()
+{
+  
+  if(col>=SIZE){//descer para a proxima linha
+	col=0;
+	line++;
+	}
+  int i,k;
+  for (i = 0; i < SIZE; i++)  
+	for (k = 0; k < SIZE; k++)  
+		mRes[line][col] += m1[line][k] * m2[i][col]; 
+  
+  
+  col++;
+}
+
+/* The main program.  */
+int main ()
+{
+  
+  int i;
+  
+  pthread_t threads[SIZE*SIZE]; //array com endereço dos 2 threads
+	
+	for(i=0;i<SIZE*SIZE;i++)
+		pthread_create(&threads[i],NULL,&mult,NULL);
+	
+  for(i=0;i<SIZE*SIZE;i++)
+		pthread_join(threads[i],NULL);
+
+	int x,y;
+
+    for(x = 0 ; x < SIZE ; x++) {
+        printf(" (");
+        for(y = 0 ; y < SIZE ; y++){
+            printf("%d     ", mRes[x][y]);
+        }
+        printf(")\n");
+    }
+	
+
+  /* Now we can safely return.  */
+  return 0;
+}

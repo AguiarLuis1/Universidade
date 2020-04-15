@@ -1,0 +1,4 @@
+malloc <- reserva dinamicamente na memoria espaço oara as variaveis
+calloc <- inicializa logo as variaveis a zero e faz o mesmo que o malloc
+realloc <- 
+free <- liberta espaço ocupado anteriormente

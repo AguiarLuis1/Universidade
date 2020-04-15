@@ -1,0 +1,16 @@
+	addi $s0,$0,0
+	Tipo I
+	0x20100000
+	addi $s1,$0,1 	
+	0x20110001
+loop:	slti $t0,$s1,1000 l1
+	0x2a2803e8
+	beq $t0,0,end
+	0x10280003
+	add $s2,$s2,$s1
+	0x02519020
+	sll $s1,$s1,1
+	0x00118840
+	j loop
+	0x08000002
+end:

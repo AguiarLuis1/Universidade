@@ -1,0 +1,53 @@
+Stack e Queue
+Stack -> Verifica o item mais recentemente adicionada(LIFO = "last in first out")
+Resizing array(melhor implementação)
+push(coloca na stack)->coloca-se no inicio(*pfirst) - duplica o tamanho do array quando este estiver cheio
+pop(retira da stack)->retira-se do inicio(*pfirst) - 50% do tamanho quando o array estiver 25% ocupado
+Queue -> Verifica o item mais antigo (FIFO = "first in first out")- Tem de ter 2 apontadores 1 para first outro para last
+enqueue(coloca na queue): coloca-se no fim
+dequeue(retira da queue): retira-se do inicio(*pfirst)
+
+Elementary Sorts
+Selection Sort
+->Procura o menor elemento da parte que não está ordenada do array e coloca-o na ultima posição do array
+ordenado(a parte esquerda do array é a parte ordenada)
+->Começa com i=0, procura o menor elemento de i até ao fim do array, troca-o com i e incrementa i(em ciclo)
+->Não depende da organização, tem sempre o mesmo custo
+
+Insertion Sort
+->Pega em cada elemento do array e move-o á esquerda até o que o elemento que estiver á sua esquerda seja menor
+->Depende da organização, não tem sempre o mesmo custo
+
+Shuffling (Knuth Shuffle)
+->i começa a 0 e vai até ao fim do array, escolhe-se um int entre 0 e i e troca-se a[i] com a[r]
+-> desta forma os elementos que estão á esquerda de i estão sempre baralhados
+
+Merge Sort
+->É um algoritmo baseado na lógica divide-and-conquer 
+->Dá sort aos primeiros dois elementos, depois aos dois asseguir e dá merge num subarray de 4 elementos, depois faz
+o mesmo processo para os proximas e dá merge num subarray de 8 elementos, até chegar a N
+->No processo de merge os dois subarrays são comparados, e são comparados os primeiros elementos de ambas os arrays
+e o elemento menor é o primeiro do array, e assim sussevivamente(cada um dos sub sem uma variavel a percorrelos)
+Melhoramentos:
+Aplicar insertion sort em arrays pequenos
+Verificar se o maior elemento da primeira parte é menor ou igual que o menor elemento da segunda parte do array
+Bottom-up merge sort
+Ideia:
+	-Divide o array e em N subarrays, cada um contendo um elemento
+	-Dá merge em pares de subarrays em subarrays contendo dois elementos, ficando agora com N/2 subarrays
+	-Repetir o processo até obter apenas um array ordenado
+Quick Sort
+->Antes de implementar, por razões de performance deve-se baralhar o array
+->Segue a lógica divide-and-conquer e baseado na ideia de escolher um elemento como pivot e dividir o array apartir
+de esse pivot, á sua esquerda os elementos menor que ele e á sua direita os elementos maiores que este, isto recursivamente
+->Reduz o espaço necessário e remove o uso de um array auxiliar como acontece no mergesort
+->Pivot=primeiro elemento (indice 0)
+
+Priority Trees
+->Àrvore é proporcial em todos os ramos menos no ultimo(adiciona-se da esquerda para a direita)
+->Valores dos pais é sempre maior que os valores dos filhos
+->Pais estão em filho/2 e filhos estão em 2*pai e 2*pai+1
+->Operação de swim- compara a key com o seu pai, e se esta for maior, trocam de posições
+->Na inserção de um novo elemento, este adiciona-se sempre na ultima posição
+->Delmax: tira-se o maior elemento e coloca-se o menor elemento no seu lugar e da-se sink 
+->Sink: Compara-se o pai com os dois filhos e troca-se de posição com o maior filho

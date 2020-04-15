@@ -1,0 +1,25 @@
+PWM - Pulse Width Modulation
+
+Few pins on the arduino allow for us to modify the output to mimic an analog signal
+~Average value voltage
+
+Changing the duty cycle=Average voltage
+analogWrite(pin(D~),value(8bits-De 0 a 255))
+e.g.:LED RGB and COL. PALETTE
+
+Input:
+.Any signal entering an electrical system
+.Both digital + analog
+
+Interruptions
+attachInterrupt(digitalPinToInterrupt(pin),ISR,node)
+
+BOARD	int 0 int 1 int 2 int 3 int 4 int 5
+UNO	2     3
+MEGA  	2     3     21    20    11    18
+
+ISR - Interrupt Service Routine(função)
+.No parameters
+.Don't return values
+.Short and fast
+Mode: low, change, rising, falling

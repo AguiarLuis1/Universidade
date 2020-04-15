@@ -1,0 +1,155 @@
+strcpy(char *dest, const char *src)
+strcmp(const char *str1, const char *str2)(< 0 str1 is less than str2,< 0 str1 is less than str2,= 0 equal)
+void insert_student_ordered(CLASSSTUDENTS *pcs, char *name, float grade, int number) {
+    STUDENT *temp = malloc(sizeof(STUDENT));//como se usa um apontador ao declarar a strutc tem de se usar seta
+    temp->grade = grade;
+    temp->number = number;
+    temp->pname = malloc(sizeof(char) * (strlen(name) + 1));
+    strcpy(temp->pname, name);
+    if (pcs->nstudents == 0) {
+        temp->pnext = NULL;
+        pcs->pfirst = temp;
+        pcs->nstudents++;
+    } else {
+        STUDENT *current = pcs->pfirst;
+        while (current->pnext != NULL && strcmp(current->pnext->pname, name) > 0) {
+            current = current->pnext;//salta de student em student
+        }
+        if (pcs->pfirst == current) {
+            pcs->pfirst = temp;
+            temp->pnext = current;
+            pcs->nstudents++;
+        } else {
+            temp->pnext = current->pnext;
+            current->pnext = temp;
+            pcs->nstudents++;
+        }
+    }
+
+}
+/* Remove da stack o aluno que tem o nome que mandamos*/
+void remove_student_ordered(CLASSSTUDENTS *pcs, char *name) {
+    if(pcs->nstudents==0) {
+        return;
+    }
+    if(strcmp(pcs->pfirst->pname,name)==0){
+        STUDENT *pDel=pcs->pfirst;
+        pcs->pfirst=pcs->pfirst->pnext;
+        pcs->nstudents--;
+        free(pDel);
+        return;
+    }
+    else{
+        STUDENT *current=pcs->pfirst;
+        STUDENT *next=pcs->pfirst->pnext;
+        while (next!=NULL){
+            if (strcmp(next->pname,name)==0){
+                current->pnext=next->pnext;
+                pcs->nstudents--;
+                free(next);
+                return;
+            }
+            current=next;
+            next=next->pnext;
+        }
+    }
+}
+/* Procura o aluno pelo nome*/
+STUDENT *find_student_ordered(CLASSSTUDENTS cs, char *name) {
+    STUDENT *aux = cs.pfirst;
+    while (aux != NULL) {
+        if (strcmp(aux->pname, name) == 0) {
+            return aux;
+        }
+        aux = aux->pnext;
+    }
+    return NULL;
+}
+/*.txt managment*/
+//guardar
+void save_students_txt(CLASSSTUDENTS cs, char fn[]) {
+    FILE *fp;
+    fp = fopen(fn, "w");
+    if (fp != NULL) {
+        fprintf(fp, "Class name: %s\n", cs.name);
+        fprintf(fp, "Number of students: %d\n", cs.nstudents);
+        STUDENT *temp = cs.pfirst;
+        for (int i = 0; i < cs.nstudents; ++i) {
+            fprintf(fp, "%s %d %2f\n", temp->pname, temp->number, temp->grade);
+            temp = temp->pnext;
+        }
+    }
+    fclose(fp);
+}
+//ler
+void read_students_txt(CLASSSTUDENTS *pcs,
+                       char fn[]) {//usa-se apontador porque se vai adicionar alunos|fn=caminho p o ficheiro
+    FILE *fp;
+    fp = fopen(fn, "r");
+    if (fp != NULL) {
+        fscanf(fp, "%*s %*s %s\n", pcs->name);//%*s ignora um a str Class outro a str Name
+        fscanf(fp, "%*s %*s %*s %d\n", &(pcs->nstudents));
+        if (pcs->nstudents != 0) {
+            STUDENT *current = malloc(sizeof(STUDENT)), *previous;
+            pcs->pfirst = current;
+            for (int i = 0; i < pcs->nstudents; ++i) {
+                char nome[100], apelido[100];
+                fscanf(fp, "%s %s %d %f\n", nome, apelido, &(current->number), &(current->grade));
+                current->pname = malloc(sizeof(char) * ((strlen(nome) + strlen(apelido) + 2)));//+2=espaço e \n
+                strcpy(current->pname, nome);
+                strcat(current->pname, " ");//mete um espaço entre o nome e o apelido
+                strcat(current->pname, apelido);
+                previous = current;
+                if (i == pcs->nstudents - 1)
+                    current = NULL;
+                else
+                    current = malloc(sizeof(STUDENT));
+                previous->pnext = current;
+            }
+        }
+    }
+    fclose(fp);
+}
+/*.bin managment*/
+//guardar
+void save_students_bin(CLASSSTUDENTS cs, char *fn) {
+    size_t namelen;
+    FILE *fp = fopen(fn, "wb");
+    if (fp != NULL) {
+        fwrite(&cs, sizeof(CLASSSTUDENTS), 1, fp);
+        STUDENT *temp = cs.pfirst;
+        for (int i = 0; i < cs.nstudents; ++i) {
+            namelen = (strlen(temp->pname)+1);//+1 para o \0
+            fwrite(&namelen, sizeof(int), 1, fp);
+            fwrite(temp->pname, (sizeof(char) * namelen), 1, fp);
+            fwrite(&temp->number, sizeof(int), 1, fp);
+            fwrite(&temp->grade, sizeof(float), 1, fp);
+            temp = temp->pnext;
+        }
+        fclose(fp);
+    }
+}
+//ler
+void read_students_bin(CLASSSTUDENTS *pcs, char *fn) {
+    int namelen;
+    FILE *fp = fopen(fn, "rb");
+    if (fp!=NULL){
+        fread(pcs, sizeof(CLASSSTUDENTS),1,fp);
+        STUDENT *current=malloc(sizeof(STUDENT)),*previous;
+        pcs->pfirst=current;
+        for (int i = 0; i < pcs->nstudents ; ++i) {
+            fread(&namelen,sizeof(int),1,fp);
+            current->pname=malloc(sizeof(char)*(namelen));
+            fread(current->pname, sizeof(char),namelen,fp);
+            fread(&current->number, sizeof(int),1,fp);
+            fread(&current->grade,sizeof(float),1,fp);
+            previous=current;
+            if(i==pcs->nstudents-1)
+                current=NULL;
+            else
+                current=malloc(sizeof(STUDENT));
+            previous->pnext=current;
+        }
+        fclose(fp);
+    }
+}

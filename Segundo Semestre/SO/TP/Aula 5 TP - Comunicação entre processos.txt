@@ -1,0 +1,31 @@
+-> A comunicação entre processos tem que ser autorizada/mediada pelo núcleo do S.O. uma vez que os processos executam em 
+ambientes de execução protegido.
+
+-> 2 Formas de comunicação
+a) Memória partilhada -	É possível alocar memória partilhada que será mapeada no espaço de endereçamento dos processos em colaboração(ou seja um espaço de
+memória que pode ser acedido e alterado por mais do um processo)
+	Vantagens: 	
+			1) É muito eficiente - só existe uma cópia da informação que é intantaneamente visivel a todos os envolvidos 
+			2) Não obriga a transições para o núcleo - todo o processo de partilha acontece em modo utilizador
+	Inconvenientes:	
+			1) O protocólo de comunicação tem que ser explicitamente programado
+
+b) Comunicação com objetos do núcleo
+Tipos:
+	.Pipes
+	.Fifos
+	.Sockets - Unix Domain Sockets e Internet Sockets
+
+Como funciona:
+	É usada a ajuda do núcleo do S.O. para transferir informação entre o espaço de endereçamento dos processos envolvidos, ou seja, um processo
+escreve no núcleo(kernel mode) e essa informação é tranferida para o processo destino, que recebe a informação copiada.
+
+	Vantagem: 
+			1) Coordenação é implícida e garantida pelo núcleo do S.O.
+	Inconvenientes:
+			1) Cópia dupla de informação
+			2) Transições para o Kernel
+
+Vetor de descritores -> É um vetor presente no objeto processo que contém os descritores abertos pelo processo durante a sua execução (È herdado em 
+caso de duplicação do processo)
+	

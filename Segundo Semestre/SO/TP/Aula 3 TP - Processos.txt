@@ -1,0 +1,9 @@
+PROCESSOS
+Processo-> Programa em execução, cada processo tem um id único para ele(PID)
+-Para além do ficheiro executável (programa) o processo tem atribuídos recursos da máquina pelo S.O.
+-Processo é também um ambiente de execução privado semelhante a uma "Máquina Virtual"
+-Cada processo possui um espaço de Endereçamento Virtual e ocupa um espaço de RAM bastante limitado
+
+Criação de Processos 
+Os processos são criados a partir de um pai(PPID), apesar de herdar os "genes" do seu pai eles são 100% independentes
+entre si.

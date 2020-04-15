@@ -1,0 +1,13 @@
+LOOP:	lw $3,200($7)
+	nop
+	add $6,$3,$5
+	forwarding
+	lw $2,100($6)
+	nop
+	add $4,$2,$3
+	forwarding
+	sub $8, $4, $6
+	forwarding
+	lw ($7),300($8)
+	beq $7,$8,LOOP
+	nop

@@ -1,0 +1,9 @@
+Main thread
+	accept novos clientes
+	envia-os para um atendente(pthread que mete os clientes em salas)
+Thread atendente
+	pthread_detach
+	cria uma nova room(nova pthread)
+	mete numa sala existente 	(sempre que se adiciona um client numa sala já existente
+					é preciso desbloquear o -pselect- e dar refresh na sua lista de fd á espera)
+	pthread_kill(desbloqueia o pselect)

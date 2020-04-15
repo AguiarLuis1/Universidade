@@ -1,0 +1,92 @@
+Algebra de Boole : Formas Canonicas
+a)Formas canonicas das funções logicas 
+ 1º)A partir da tabela da verdade
+ 2ª)Por multiplicação algebrica (Postulados,Teoremas)
+
+b)Como obter as Formas Canonicas das Funções Logicas :2 TIPOS
+ 1º)minterms:formas minimas ----->soma de Produtos 
+ 2ª)maxterms:formas maximas ----->produto de somas
+
+
+A importancia ds formas canonicas projeto de Sistemas Digitais
+é elevada porque todos os metodos de simplificação de Funções logicas
+partem da função na sua forma canonica a)metodo grafico karvarg (<4)
+                                       b)metodo numerico de Quin mc bla bla
+
+
+Sintese:
+
+1ªFunção:Soma de produtos que dão 1 na tabela de verdade da Função 
+                              (cada produto tem todas as entradas)
+
+2ºFunção:Produto de Somas que dão 0 na tabela de verdade da Função
+                              (cada som tem todas as variaveis)
+
+
+Exemplos:
+              _  __ ___     
+1ªFunção: S1=abc+abc+abc
+
+         .3 Termos =minterms(produtos)
+                       _ _  _ _ _
+2ªFunção: S2=(a+b+c)+(a+b+c)(a+b+c)
+
+         .3 Termos =maxterms (somas)
+---------------------------------------------
+
+Regra para obter as formas Canonicas a partir da T.V
+
+a) 1ªFC Somas para todas as condiçõesda tabela de Verdade das variaveis
+   de entrada que dão o valor 1 (Verdadeiro) À função
+
+b) 2ªFC:Multiplicar todas as combinações da tabela de Verdaade ds variveis de entrada  que dão o valor 0(falso)
+
+
+Exemplo:
+a) Partir da 1º)FC e chegar à 2ª)FC
+              _ _ _    _         
+1º)Função: F1=abc+abc+abc+abc 
+              010 011 101 111
+               2   3   5   7
+           F1=m2+ m3+ m5+ m7
+
+
+Daqui pode-se concluir que os termos maximos(maxterms) são aqueles que aqui faltam:0,1,4,6
+
+   Logo=M0. M1. M4. M6
+       000 001 100 110
+       _______________ <---------NEGAR TUDO
+       111 110 011 001 
+
+                _   _       _ _
+F1=(a+b+c).(a+b+c).(a+b+c).(a+b+c)  
+
+
+b)Partir da 2ªFunção e chegar à 1ªFunção
+          _ _ _   _ _     _         _           
+2ªFC: F2=(a+b+c).(a+b+c).(a+b+c).(a+b+c).(a+b+c)
+           111     110     100     010     000
+           M7      M6      M4      M2      M0
+
+Daqui se conclui que os termos minimos (minterms) são aqueles que faltam:1,3,5
+
+           F2=m1+ m3+ m5
+              001 011 101
+              __  _    _ 
+           F2=abc+abc+abc
+
+
+
+
+PROBLEMA1
+Atendendo À seguinte tabela de verdade pretende-se obter a função F1 nas suas duas formas canonics
+abc|F1                                  ___  _    _ 
+                             Para a 1ºF=abc+abc+abc
+000|1
+001|0                                       _     _       _ _   _       _ _ _  
+010|0                       Para a 2ªF=(a+b+c).(a+b+c).(a+b+c).(a+b+c).(a+b+c)
+011|0
+100|1
+101|1
+110|0
+111|

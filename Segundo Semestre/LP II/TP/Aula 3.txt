@@ -1,0 +1,16 @@
+EXPRESSÕES
+.Separadores-> . [] () ; :
+.Operadores:
+	Aritméticos e atribuição-> = ++ -- + - * / %
+	Comparação-> == != > >= < <= instanceof
+	Lógicos-> && || !
+	Bitwise-> & | ^ ~
+	Bitwise aritméticos shift-> >> <<
+	Bitwise lógico shift-> >>>>
+	Creacionais-> new <constructions>()
+	Cast-> (<type>)
+CONTROLO FLUXO
+.Condicionais-> if, switch
+.Ciclos-> for, do while, while
+.Controlo especial-> continue, break
+	

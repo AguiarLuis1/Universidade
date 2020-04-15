@@ -1,0 +1,28 @@
+typedef struct QueueIntsArray{
+    int q[QUEUE_CAPACITY];
+    int tail,head,N;
+}QUEUEINTS;
+void initQueue(QUEUEINTS *q);
+void enqueue(QUEUEINTS *q,int item);
+int dequeue(QUEUEINTS *q);
+void queuetest();
+int main(){
+    queuetest();
+}
+void initQueue(QUEUEINTS *q){
+    q->N=0;
+    q->tail=0;
+    q->head=0;
+}
+void enqueue(QUEUEINTS *q,int item){//por na fila
+    q->q[q->tail]=item;
+    q->tail=(q->tail+1)%QUEUE_CAPACITY;
+    q->N++;
+}
+int dequeue(QUEUEINTS *q){
+    int item;
+    item=q->q[q->head];
+    q->head=(q->head+1)%QUEUE_CAPACITY;
+    q->N--;
+    return item;
+}

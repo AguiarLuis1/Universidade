@@ -1,0 +1,41 @@
+1-
+a) getpid(void) - retorna o id do processo
+   getppid(void) - retorna o id do processo "pai"(processo a partir do qual este foi criado)
+b) O PPID é sempre o mesmo porque o processo é sempre criado a partir do terminal ou seja o PPID é o id do terminal
+e o PID é o id do novo processo
+c)ver no pc
+e)
+PID- ID do processo
+USER-Usuário proprietário do processo.
+PR (Prioridade)-A prioridade de agendamento do processo. Alguns valores neste campo são ‘ RT ‘ . Isso significa que o processo está sendo executado em tempo real (Real Time).
+VIRT-A quantidade de memória virtual usada pelo processo.
+RES-O tamanho da memória usada. Residente na memória física e não na área de troca (swap).
+SHR-SHR é a memória compartilhada usada pelo processo.
+%CPU- Percentagem de cpu usada por cada processo
+%MEM- Percentagem de mem usada por cada processo
+TIME+-O tempo total de CPU que a tarefa tem usado desde o início (precisão de centésimo de segundo)
+COMMAND-Descrição do comando que foi utilizado para iniciar o processo.
+2
+a)getuid(void)- Retorna o ID do utilizador que chamou o processo
+  getgid(void)- Retorna o group ID do processo que chamou o processo
+b)O resultado por mais vezes que se execute o programa é sempre 1000, isto porque o id do ultilizador e do grupo que chamaram o processo não é alterado
+3
+a)getenv(const char *name)- Pesquisa a lista de ambiente para encontrar o nome da variável de ambiente e retorna uma string.
+  getwcd(char *buf, size_t size)- Esta função retorna uma string caminho absoluto que é o diretório de trabalho atual do processo de chamada. O nome do caminho é retornado como o resultado da função e
+  através do argumento buf, se presente 
+b)
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main()
+{
+    printf("PID: %d\n",(int) getpid());
+    printf("PPID: %d\n",(int) getppid());
+    printf("UID: %d\n",(int) getuid());
+    printf("GID: %d\n",(int) getgid());
+    printf("Path: %s\n", getenv("PATH"));
+    char buf[256]="";
+    printf("%s\n",getcwd(buf,256));
+    return 0;
+}

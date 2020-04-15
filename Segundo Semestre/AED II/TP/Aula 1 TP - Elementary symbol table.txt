@@ -1,0 +1,18 @@
+ADT - Tabela de Símbolos (ST)
+
+->API básica de ST (Operações nas chaves limitam-se à igualdade/desigualdade)
+	Lista ligada não ordenada
+->API ordenada(extensão da API básica) (Op. nas chaves podem ser de comparação de maior/menor/igual)
+	Array ordenado
+
+Função rank(exemplo)
+
+keys: 	5,10,15,20,25
+	0  1  2  3  4
+N=5 chaves
+Calcular:
+a) rank(3)=0(incrementa o N)
+b) rank(5)=0
+c) rank(12)=2(incrementa o N)
+c) rank(15)=2
+c) rank(30)=5(incrementa o N)

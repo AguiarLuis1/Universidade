@@ -1,0 +1,28 @@
+Linhas
+[2]-V,O compilador de C possui vários módulos que genericamente são:
+pré-compilador (interpreta directivas #) + lexer (separa tokens do
+source code) + parser (constrói árvore sintática) + code generator
+(liga libraries e gera binary code)
+[6]-F
+[7]-F,Embora o compilador dê warning porque o array tem mais de 3 elementos que e o que esta declarado
+[8]-F,está a ser iniciada uma matrix 2x2;
+[10]-Possui warning porque ambos os operadores são inteiros, logo a divisão
+será inteira (2), mas o printf espera %f (imprimirá erradamente 0.00).
+[11]-Imprime "___"
+[12]-Não tem erro de compilação (embora vá preencher uma posição de memória
+da linha seguinte... strs[2][0]).
+[13]-V,Possui um warning porque o printf espera um endereço de uma string mas
+está a receber um int (ascii), logo não funcionará correctamente.
+[14]-strlen(strs[3]) dá 0, logo 0==0 dá 1
+[15]-Imprime 0 porque estamos a imprimir o resto de 'A'/'A'
+[16]-Imprime 8 porque o Y está BEM declarado como char
+[17]-Imprime 0 pois '0'-'0'(48-48<-ASCII) dá 0 em decimal
+[18]-3,refere-se à posição 
+[19]-Nada, porque está a imprimir depois do v de nov
+[20]-4, pois è '3'+1 (ASCII)
+[21]-V,1
+[22]-(Nada), deveria ser %d porque strcmp retorna um inteiro
+[23]-x=1. A função bar(), faz ('1'-'0')=1(ASCII)
+[24]Nada, pois não é uma string, é um valor decimal inteiro, e portanto não tem
+'\0' para ser uma string.
+[29]-Falso, está a saltar de valores decimais em valores decimais para depois ler ASCII

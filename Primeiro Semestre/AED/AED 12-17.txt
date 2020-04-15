@@ -1,0 +1,12 @@
+FILAS PRIORITÁRIAS(usando binary heap)
+->Max-oriented(ou Max PQ): quanto maior o valor, maior a prioridade
+->Min-oriented(ou Min PQ): quanto menor o valor, maior a prioridade
+BINARY HEAP
+->Árvore completamente preenchida em todas os níveis, exceptuando, por vezes o último nível
+->O último nível só fica preenchido se o número de elementos for uma potência de 2 menos 1(N=2^M -1)
+->O preenchimento do último nível é feito da esquerda para a direita
+Instruções básicas:
+	->sink(afundar)
+	->swim(emergir)
+Conceito de Heap Order
+	->As raízes têm prioridade maior ou igual que os seus dois ramos

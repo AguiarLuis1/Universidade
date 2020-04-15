@@ -1,0 +1,30 @@
+Stack_LIFO
+#define STACK_CAPACITY 5
+typedef struct stackIntsArray{
+	int s[STACK_CAPACITY];
+	int n;
+}STACKINTS;
+void initStack(STACKINTS *st){
+	st->n=0;
+}
+void push(STACKINTS *st, int item){
+	st->s[st->n]=item;
+	st->n++;
+}
+int pop(STACKINTS *st){
+	int item;
+	st->n--;
+	item=st->s[st->n];
+	return item;
+}
+void clientStack(){
+	int array[6]={0,1,2,3,4,5};
+	STACKINTS stk;
+	initstack(&stk);//tem de se trabalhar porque o nome nao represente o endereço da primeira posição
+	for(int i=0,i<6,i++){//ciclo para dar push
+	push(&stk,array[i]);
+	}
+	for(int j=0,j<stk.n,j++){
+	printf("Pos[%d]-%d",i,pop(&stk));
+}
+

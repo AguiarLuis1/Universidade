@@ -1,0 +1,92 @@
+->addi $s0,$0,0
+Format -> I
+Segundo o formato:
+6	5	5	16
+OPCODE	RS	RT	IMM.
+8HEX 	$0	$s0	0
+001000	00000	10000	0000000000000000
+20100000 <-Converter para hexadecimal
+
+->addi $s0,$0,0
+Format -> I
+Segundo o formato:
+6	5	5	16
+OPCODE	RS	RT	IMM.
+8HEX 	$0	$s1	0
+001000	00000	10001	0000000000000000
+20110000 <-Converter para hexadecimal
+
+->slti $t0,$s0,10
+Format -> I
+Segundo o formato:
+6	5	5	16
+OPCODE	RS	RT	IMM.
+aHEX 	$s0	$t0	10
+001010	10000	01000	0000000000001010
+2a08000a <-Converter para hexadecimal
+
+->beq $t0,$0,exit
+Format -> I
+Segundo o formato:
+6	5	5	16
+OPCODE	RS	RT	IMM.
+4HEX 	$t0	$0	3
+000100	01000	00000	0000000000000011
+11000003 <-Converter para hexadecimal
+
+->add $s1,$s1,$s0
+Format -> R
+Segundo o formato:(Neste formato o OPCODE é sempre 0, preenche-se o funct)
+6	5	5	5	5	6
+OPCODE	RS	RT	RD	SHAMT	FUNCT
+0	$s1	$s0	$s1	0	20HEX
+000000	10001	10000	100001	00000	100000
+02308820<-Hexa
+
+->addi $s0,$s0,1
+22100001<-hexa
+
+->j LOOP
+Format -> J
+Segundo o formato:
+6	26
+OPCODE	ADD
+000010	XXXX0...00010XX
+08000002<-hex
+No add:
+1º - vai-se buscar segundo o programa o endereço de memoria em que a label que se pretende saltas está
+2º - Corta-se os 2 zeros á direita porque só existem saltos de 4 em 4 na memória
+3º - Corta-se os 4 zeros á esquerda(depende do problema/enunciado)
+->jal printf
+Format -> J
+6	26
+OPCODE	ADD.
+3HEX	44
+000011	XXXX0...00001011XX
+0c00000b<-hex
+
+->syscall
+Format -> R
+Segundo o formato:(Neste formato o OPCODE é sempre 0, preenche-se o funct)
+6	5	5	5	5	6
+OPCODE	RS	RT	RD	SHAMT	FUNCT
+0	0	0	0	0	12
+000000	00000	00000	000000	00000	001100
+0000000c
+
+->jr $ra
+Format -> R
+Segundo o formato:(Neste formato o OPCODE é sempre 0, preenche-se o funct)
+6	5	5	5	5	6
+OPCODE	RS	RT	RD	SHAMT	FUNCT	
+000000	11111	00000	000000	00000	001000
+03e00008
+
+->addi $v0,10
+Format->I
+2002000a
+
+
+
+
+

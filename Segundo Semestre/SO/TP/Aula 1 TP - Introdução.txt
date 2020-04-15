@@ -1,0 +1,10 @@
+Introdução
+-Definição de SO: È um programa para ajudar o utilizador a executar outros programas
+-Funções do SO 
+-Organização do SO 
+-Funcionalidades do SO: 
+	->"User Mode"(modo utilizador)
+	->"Kernel Mode"(modo núcleo)
+-Interface com o SO:
+	->Linha de comandos				(Posix->Interface de chamadas ao sistema
+	->Chamadas ao sistema("System Calls")		SO de base Unix)

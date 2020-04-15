@@ -1,0 +1,13 @@
+Árvores Binárias de Pesquisa(BST)
+- Estrutura não linear e ligada
+
+Propriedades das BSTs
+-Se o número de chaves for N=2^M-1, e para o melhor caso de formato de árvore BST, todos os níveis da ávore, 
+incluindo o último, estão completamente preenchidos(altura da BST=M-1)
+
+Exercício
+N=7 chaves 1,2,3,4,5,6,7
+a) ordem de inserção de melhor caso:
+4,2,6,3,1,5,7
+b) ordem de inserção de pior caso:
+1,2,3,4,5,6,7

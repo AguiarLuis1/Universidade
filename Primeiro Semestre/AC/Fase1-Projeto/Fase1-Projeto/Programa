@@ -1,0 +1,283 @@
+.data	
+	tabuleiro:	.word   0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  #x=1 O=2 , linha1=0-2 linha 2=3-5 linha 3=6-8	
+	newline_msg:	.asciiz "\n"
+	player1_msg: .asciiz "P1:Digite uma posição(1-9): "
+	player2_msg: .asciiz "P2:Digite uma posição(1-9): "
+	infotabuleiro_msg: .asciiz "Legenda-> 0=Vazio, 1=X, 2=O\n"
+	invalida_msg: .asciiz "Esta posicao esta fora do tabuleiro ou ja foi preenchida!\n"
+	player1win_msg: .asciiz "Player 1 venceu(+3 pontos) e o"
+	player2win_msg: .asciiz "Player 2 venceu(+3 pontos) e o "
+	player2zeropoints_msg: .asciiz "Player 2 continua com 0 pontos!\n"
+	player1zeropoints_msg: .asciiz "Player 1 continua com 0 pontos!\n"
+	limpartabuleiro_msg: .asciiz "O tabuleiro foi limpo\n"
+	wronginput_msg: .asciiz "Input invalido\n"
+	p1losepoints_msg: .asciiz "Player 1 perde um ponto!\n"
+	p2losepoints_msg: .asciiz "Player 2 perde um ponto!\n"
+	player1print_msg: .asciiz "Player 1-> "
+	player2print_msg: .asciiz "Player 2-> "
+	printpoints: .asciiz "Pontos: "
+	printwins: .asciiz "\tVitorias: "
+	pontosp1:	.word 0
+	pontosp2:	.word 0
+	winsp1:		.word 0
+	winsp2:		.word 0
+	msg_empate: .asciiz "Jogo empatado!\n"
+
+      
+# Overwrites existing exception handler
+        .ktext 0x80000180
+        .set   noat     	# tell assembler not to use $at (assembler temporary)
+       	                	# and hence not to complain when we do
+        move   $k0, $at 	# save $at in $k0
+                        	# $k0 and $k1 are reserved for 
+                        	# OS and Exception Handling
+                        	# programmer should not use them, so not saved
+        .set   at       	# tell assembler it may use $at again
+
+        li    $a0, 0xFFFF0004 	# Receiver data address (interrupt based, so don't need to check Receiver control)
+        lw    $v0, 0($a0)     	# Receiver data 
+       
+
+	eret  			# return from exception, PC <- EPC
+	.text
+	.globl main
+main:	
+        li    $a0, 0xFFFF0000	# Receiver control
+        lw    $t0, 0($a0)
+        ori   $t0, 0x02		# set bit 1 to enable input interrupts
+                              	# such a-synchronous I/O (handling of keyboard input in this case) 
+                              	# this is much more efficient than the "polling" we use for output
+                              	# In particular, it does not "block" the main program in case there is no input
+        sw     $t0, 0($a0)    	# update Receiver control
+	
+        mfc0   $t0, $12  	# load coprocessor0 Status register
+        ori    $t0, 0x01 	# set interrupt enable bit
+      	j player1
+forever:      
+	beq $v0,'x',player1win
+	beq $v0,'o',player2win
+	beq $v0,'p',printtabuleiro
+	beq $v0,'e',printwinsandpoints
+	beq $v0,'f',exit
+	
+        j forever
+
+exit:
+	li $v0,10
+	syscall
+player1:
+	#Imprime a label player1_msg
+	li $v0,4
+	la $a0,player1_msg
+	syscall
+	li $v0,5	#Scan da posição
+	syscall
+	addi $v0,$v0,-1	#remove 1, para poder ser de 1-9 e não de 0-8(input mais intuitivo)
+	mul $t0,$v0,4	#multiplica por 4 por causa da memora c inteiros saltar de 4 em 4
+	move $a0,$v0
+	jal posicaovalida
+	beq $v0,0,posinvalidap1
+	li $t1,1 #t1=1=>x
+	sw $t1, tabuleiro($t0)	#guarda na posição obtida do output
+	addi $s3,$s3,1
+	bgt $s3,8,empate
+	jal printtabuleiro
+	jal forever
+	
+	j player2
+	
+posinvalidap1:
+	li $v0,4
+	la $a0, invalida_msg
+	syscall
+	jal forever
+	j player1
+	
+player2:
+	li $v0,4
+	la $a0,player2_msg
+	syscall
+	li $v0,5
+	syscall
+	addi $v0,$v0,-1
+	mul $t0,$v0,4
+	move $a0,$v0
+	jal posicaovalida
+	beq $v0,0,posinvalidap2
+	li $t1,2
+	sw $t1, tabuleiro($t0)
+	addi $s3,$s3,1
+	bgt $s3,8,empate
+	jal printtabuleiro
+	jal forever
+	j player1
+posinvalidap2:
+	li $v0,4	
+	la $a0, invalida_msg
+	syscall
+	jal forever
+	j player2
+	
+
+#Verifica se a posição está dentro da matriz, e se não está ocupada(0=invalida, 1=valida)
+posicaovalida:
+	bgt $a0,8,invalida#se >8
+	blt $a0,0,invalida#se <0
+	lw $t6,tabuleiro($t0)#carrega para $t0 o valor do tabuleiro na posição para saber se está ocupado
+	bne $t6,0,invalida#se for diferente de 0 está ocupado
+	li $v0,1#se a posição for valida retorna 1
+	jr $ra
+	
+invalida:
+	li $v0,0#se a posição for invalida retorna 0
+	jr $ra
+		
+
+#Dà print ao conteudo do tabuleiro
+printtabuleiro:
+		li $v0,4
+		la $a0,infotabuleiro_msg
+		syscall
+		li $t0,0
+	print:	
+		beq $t0,36,endprint#36=4*9
+		lw $t1,tabuleiro($t0)
+		addi $t0,$t0,4
+		li $v0,1
+		move $a0,$t1
+		syscall
+		beq $t0,12,newline
+		beq $t0,24,newline
+		j print
+	newline:
+		li $v0,4
+		la $a0,newline_msg
+		syscall
+		j print
+		
+	endprint:
+		li $v0,4
+		la $a0,newline_msg
+		syscall
+		jr $ra
+
+#se o player 1 ganhar
+player1win:
+	li $v0,4
+	la $a0,player1win_msg
+	syscall
+	lw $t0,winsp1
+	addi $t0,$t0,1
+	sw $t0,winsp1
+	lw $t0,pontosp1
+	addi $t0,$t0,3
+	sw $t0,pontosp1
+	lw $t0,pontosp2
+	beq $t0,0 p2zeropoints#se o player 1 não tiver nenhum ponto não se substrai
+	li $v0,4
+	la $a0, p2losepoints_msg
+	syscall
+	addi $t0,$t0,-1
+	sw $t0,pontosp2
+	j endpoints
+p2zeropoints:
+	li $v0,4
+	la $a0,player2zeropoints_msg
+	syscall
+	j endpoints
+
+	
+#se o player2 ganhar
+player2win:
+	li $v0,4
+	la $a0,player2win_msg
+	syscall
+	lw $t0,winsp2
+	addi $t0,$t0,1
+	sw $t0,winsp2
+	lw $t0,pontosp2
+	addi $t0,$t0,3
+	sw $t0,pontosp2
+	lw $t0,pontosp1
+	beq $t0,0 p1zeropoints#se o player 1 não tiver nenhum ponto não se substrai
+	li $v0,4
+	la $a0, p1losepoints_msg
+	syscall
+	addi $t0,$t0,-1
+	sw $t0,pontosp1
+	j endpoints
+p1zeropoints:
+	li $v0,4
+	la $a0,player1zeropoints_msg
+	syscall
+	j endpoints
+endpoints:
+	jal limpartabuleiro
+	j player1
+	
+limpartabuleiro:
+	li $v0,4
+	la $a0,limpartabuleiro_msg
+	syscall
+	li $t0,0
+loop1:	beq $t0,36,leave1
+	lw $t1,tabuleiro($t0)
+	addi $t1,$0,0
+	sw $t1,tabuleiro($t0)
+	addi $t0,$t0,4
+	j loop1
+leave1:
+	jr $ra
+#dá print das wins e dos pontos dos 2 players
+printwinsandpoints:
+	li $v0,4
+	la $a0,player1print_msg
+	syscall
+	li $v0,4
+	la $a0,printpoints
+	syscall
+	lw $t0, pontosp1
+	li $v0,1
+	move $a0,$t0
+	syscall
+	li $v0,4
+	la $a0, printwins
+	syscall
+	lw $t0, winsp1
+	li $v0,1
+	move $a0,$t0
+	syscall
+	li $v0,4
+	la $a0,newline_msg
+	syscall
+	li $v0,4
+	la $a0,player1print_msg
+	syscall
+	li $v0,4
+	la $a0,printpoints
+	syscall
+	lw $t0, pontosp2
+	li $v0,1
+	move $a0,$t0
+	syscall
+	li $v0,4
+	la $a0, printwins
+	syscall
+	lw $t0, winsp2
+	li $v0,1
+	move $a0,$t0
+	syscall
+	li $v0,4
+	la $a0,newline_msg
+	syscall
+	jr $ra
+
+empate:
+	li $v0,4
+	la $a0,msg_empate
+	syscall
+	jal limpartabuleiro
+	j player1
+
+ 
+

@@ -1,0 +1,13 @@
+Horario
+Sala_ID
+Turma_ID
+Dia_da_Semana
+Hora inicio
+Hora Fim
+
+
+Sala
+Id
+Numero -> ex: S1
+Capacidade
+Tipo

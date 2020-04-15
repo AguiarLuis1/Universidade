@@ -1,0 +1,21 @@
+Tabelas de dispersão(hash)
+.compromisso entre espaço-tempo
+.função de hash
+
+Função de hash h() ou hash() tem:
+como entrada a chave(key), que pode ser qualquer coisa(ex: uma string)
+como saída uma posição da tabela onde a chave deverá ser guardada:
+	hash(key)-->index
+
+Tabela com dimensão M(ex: M=8)
+ keys[]
+0 23		inserção das chaves(por ordem):
+1 		35,60,15,23
+2 		Função de módular hashing
+3 35		h(k)=K%M
+4 60
+5 		35%8=3
+6 		60%6=4
+7 15		15%8=7
+		23%8=7(1)
+

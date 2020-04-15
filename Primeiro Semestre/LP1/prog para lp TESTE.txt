@@ -1,0 +1,228 @@
+fgets(str, sizeof str, stdin);<- Para dar scanf a frase e nao apenas à palavra
+Ver matrizes e tabela ASCII
+atoi(str); <-Converte uma string num int
+itoa(num,str, base); <-converte um int em str (Base 10 para decimal, 2 para binario,16 hexadecimal)
+BIBLIOTECA DAS STRINGS
+strcpy(string_destino, string_origem); <-Realiza a cópia do conteúdo de uma variável a outra
+strcat(string_destino, string_origem); <-Realiza a concatenação do conteúdo de uma variável a outra.
+variável do tipo inteiro = strlen(string); <- Indica o tamanho da string sem o '\0'
+variável do tipo inteiro = strcmp(string1, string2); <-Compara o conteúdo de duas strings;
+	0: conteúdo das strings são iguais
+	< 0: conteúdo da string1 é menor do que string2
+	> 0: conteúdo da string1 é maior do que string2
+
+FUNÇÃO PARA ELIMINAR UMA SUBSTRING PRESENTE NUMA STRING
+char *del_sub_str(char *pstr, char *psub) {
+    int j, k;
+    int s2 = strlen(psub);
+    for (int i = 0; *(pstr + i) != '\0'; ++i) {
+        if ((*pstr + i) == *(psub + 0)) {//procura na string principal a primeira letra de sub
+            for (j = 1; *(psub + j) != '\0'; ++j) {
+                if (*(pstr + j) != *(psub + j)) {
+                    break;
+                }
+            }
+            if ((*psub + j) == '\0') {
+                for (k = i; *(pstr + k + s2) != '\0'; ++k) {
+                    *(pstr + k) = *(pstr + k - s2);
+                }
+                *(pstr + k) = '\0';
+            }
+
+        }
+    }
+    return pstr;
+}
+FUNCAO PARA REMOVER CARATERES REPETIDOS DE UMA STRING
+char *removeDuplicate(char str[], int n) {//n=strlen(s)
+    int index = 0;//é o index da string modificada
+    for (int i = 0; i < n + 1; i++) {
+        // verifica se str[i] esta presente anteriormente
+        int j;
+        for (j = 0; j < i; j++)
+            if (str[i] == str[j])
+                break;
+        // nao estando presente e adicionada a string final.
+        if (j == i) {
+            str[index] = str[i];
+            index++;
+        }
+    }
+
+    return str;
+}
+->RECURSIVAS
+FUNÇÃO PARA INVERTER UMA STRING RECURSIVAMENTE
+char *reversestring(char *str) {
+
+    static int i = 0;
+    static char revstr[100];
+    if (*str) {
+        reversestring(str + 1);//calling the function ReverseOfString itself
+        revstr[i++] = *str;
+    }
+    return revstr;
+}
+FUNÇÃO QUE CONVERTE PARA BINARIO RECURSIVAMENTE
+long convertBinary(int decNo)
+{
+    static long biNo,r,fctor = 1;
+
+    if(decNo != 0)
+    {
+        r = decNo % 2;
+        biNo = biNo + r * fctor;
+        fctor = fctor * 10;
+        convertBinary(decNo / 2);//calling the function convertBinary itself recursively
+    }
+    return biNo;
+}
+FUNÇÃO PARA VERIFICAR SE UMA FRASE É SIMETRICA 
+void checkPalindrome(char wordPal[], int index)//INDEX=0
+{
+    int len = strlen(wordPal) - (index + 1);
+    if (wordPal[index] == wordPal[len])
+    {
+        if (index + 1 == len || index == len)
+        {
+            printf(" The entered word is a palindrome.\n\n");
+            return;
+        }
+        checkPalindrome(wordPal, index + 1);//calling the function itself recursively
+    }
+    else
+    {
+        printf(" The entered word is not a palindrome.\n\n");
+    }
+}
+FUNÇAO PARA MULTIPLICAR 2 MATRIZES RECURSIVAMENTE
+void multiplyMatrix(int arm[MAX][MAX],int brm[MAX][MAX])
+{
+
+    static int sum,i=0,j=0,k=0;
+
+    if(i<rone)
+    { //row of first matrix
+    if(j<ctwo)
+    {  //column of second matrix
+         if(k<cone)
+         {
+             sum=sum+arm[i][k]*brm[k][j];
+             k++;
+             multiplyMatrix(arm,brm);
+         }
+         crm[i][j]=sum;
+             sum=0;
+             k=0;
+             j++;
+             multiplyMatrix(arm,brm);
+    }
+    j=0;
+    i++;
+    multiplyMatrix(arm,brm);
+    }
+}
+
+FUNÇÃO PARA VERIFICAR SE DUAS STRINGS SÃO "ANAGRAM" (PEARS E SPARE SÃO)
+int checkAnagram(char *str1, char *str2)
+{
+    int str1ChrCtr[256] = {0}, str2ChrCtr[256] = {0};
+    int ctr;
+    /* check the length of equality of Two Strings */
+    if(strlen(str1) != strlen(str2))
+    {
+        return 0;
+    }
+    //count frequency of characters in str1 
+    for(ctr = 0; str1[ctr] != '\0'; ctr++)
+    {
+        str1ChrCtr[str1[ctr]]++;
+    }
+    //count frequency of characters in str2 
+    for(ctr = 0; str2[ctr] != '\0'; ctr++)
+    {
+        str2ChrCtr[str2[ctr]]++;
+    }
+    //compare character counts of both strings 
+    for(ctr = 0; ctr < 256; ctr++)
+    {
+        if(str1ChrCtr[ctr] != str2ChrCtr[ctr])
+            return 0;
+    }
+    return 1;
+}
+PROGRAMA PARA SEPARAR AS PALAVRAS EM NOVAS STRINGS
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char str1[100];
+    char newString[10][10]; 
+    int i,j,ctr;
+       printf("\n\n Split string by space into words :\n");
+       printf("---------------------------------------\n");    
+ 
+    printf(" Input  a string : ");
+    fgets(str1, sizeof str1, stdin);	
+ 
+    j=0; ctr=0;
+    for(i=0;i<=(strlen(str1));i++)
+    {
+        // if space or NULL found, assign NULL into newString[ctr]
+        if(str1[i]==' '||str1[i]=='\0')
+        {
+            newString[ctr][j]='\0';
+            ctr++;  //for next word
+            j=0;    //for next word, init index to 0
+        }
+        else
+        {
+            newString[ctr][j]=str1[i];
+            j++;
+        }
+    }
+    printf("\n Strings or words after split by space are :\n");
+    for(i=0;i < ctr;i++)
+        printf(" %s\n",newString[i]);
+    return 0;
+}
+
+//FUNÇÃO PARA DETERMINAR SE DOIS NUMEROS INTEIROS SÃO PERMUTAÇÕES
+//1º CONVERTER O NUMERO INTEIRO PARA UMA STRING
+//2º ORGANIZAR O ARRAY USANDO UM DOS SORT
+//3º VERIFICAR A IGUALDADE COM UMA FUNÇÃO
+char *convintstr(int num, int size, char *str){	//CONVERTER INT EM STR					
+    int i;					//num= inteiro, size=tam. do inteiro, *str=str que vai devolver
+    int res;
+    for (i = size-1; i>=0 ; --i) {
+        res=num%10;
+        num=num/10;
+        str[i]=res+'0';
+    }
+    str[size]='\0';
+    return str;
+
+}
+void ordenar(char *str, int tamanho) { 	//ORDENAR A STR
+    int i, j;				//*str=str que se pretende organizar, tamanho=tamanho da str(sem '\0')
+    char tmp;
+    for (i = 1; i < tamanho; i++) {
+        j = i;
+        while (j > 0 && *(str+j - 1) > *(str+j)) {
+            tmp = *(str+j);
+            str[j] = *(str+j-1);
+            *(str+j-1) = tmp;
+            j--;
+        }
+    }
+}
+int compvorg(char *v1, char *v2, int size1, int size2) {//DEVOLVE 1 SE FOREM IGUAIS E 0 SE FOREM DIFERENTE;
+    if (size1 == size2) {
+        	for (int i = 0; i < size1; ++i) {
+            		if (*(v1+i) != *(v2+i)) {
+                	return 0;
+            		}
+        	}
+	}
+	return 1;
+}

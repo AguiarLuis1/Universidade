@@ -1,0 +1,71 @@
+.data
+	pedirx_msg:	.asciiz	"Insira o valor de x:"
+	pedirn_msg:	.asciiz "Insira o valor de n:"
+	newline: 	.asciiz "\n"
+	zero:		.float	0.0
+	um:		.float 1.0
+	
+.text
+main:
+	lwc1 $f4,zero
+	lwc1 $f5,um
+	li $v0,4
+	la $a0,pedirx_msg
+	syscall
+	li $v0,6
+	syscall
+	mov.s $f20,$f0
+	li $v0,4
+	la $a0,newline
+	syscall
+	li $v0,4
+	la $a0,pedirn_msg
+	syscall
+	li $v0,6
+	syscall
+	mov.s $f20,$f0
+	
+	mov.s $f12,$f21
+	mov.s $f13,$f20
+doit:	
+	c.lt.s $f4,$f21
+	bc1f exitdoit
+	jal power
+	mov.s $f6,$f0
+	jal factorial
+	mov.s $f7,$f0
+	add.s $f4,$f4,$f5
+	j doit
+exitdoit:
+	li $v0,10
+	syscall
+	
+		
+#$f12=x $f12=n
+power:
+loop:	
+	c.le.s $f4,$f12
+	bc1f exit
+	add.s $f0,$f13,$f13
+	sub.s $f12,$f12,$f5
+	j loop
+exit:
+	jr $ra
+	
+factorial:#n=$f12
+	mov.s $f0,$f4
+	mov.s $f6,$f4
+loop1:	c.le.s $f6,$f12
+	bc1f exit1
+	mul.s $f0,$f0,$f6
+	add.s $f6,$f6,$f4
+	j loop1
+exit1:
+	jr $ra
+	
+	
+	
+		
+	
+	
+	

@@ -1,0 +1,32 @@
+@Data - cria getter e setter e toString
+@NoArgsConstructor - Construtor com 0 args
+
+BD
+JPA
+@Entity -  na class para criar a tabela
+@Id - num atributo para ser a pk
+@GeneratedValue(strategy = GenerationType.IDENTITY) - Id + isto vai dar um id de auto increment
+@Transient - para um atributo não ser guardado na bd
+
+Tipos de relações - Tem de se escrever dos dois lados da relação
+@OneToMany(cascade = CascadeType.PERSIST) //para ao guardar o elemento na bd guardar todos os envolvidos
+@ManyToOne (mappedBy = "chaveEstrangeira") -> para eliminar tabelas de um para muitos
+
+Repositorio ou seja maneira de aceder á tabela client ( AO SEU CRUD) 
+@Repository//para criar uma interface para o repositório
+public interface ClientRepo extends CrudRepository<Client,Long> {//ao extends a outra class permite aceder pelo id, etc...
+}							//Long /= long
+@EqualsAndHashCode.Exclude //para evitar referências circulares (@ManyToOne)
+@Autowired //injeta aqui uma instância do ClientRepo
+private ClientRepo clientRepo;
+
+Quando um teste não tem acesso ao conteudo do spring (NullPointException)
+@SpringBootTest //tem de carregar tudo
+@DataJpaTest //apenas carrega info do jpa
+
+Impressão infinita no localhost 
+@JsonBackReference //do lado manyToOne
+@JsonManagedReference //do lado oneToMany
+
+@webmvctest -> carrega apenas os controllers (controllers=ClientController.class)
+@datajpatest -> carrega db

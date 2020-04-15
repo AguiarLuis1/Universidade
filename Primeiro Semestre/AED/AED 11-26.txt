@@ -1,0 +1,21 @@
+ELEMENTATY SORTS-https://www.hackerearth.com/practice/algorithms/sorting/selection-sort/visualize/ ou visualgo.net
+Problema de ordenação(sort algorithm)
+Padrão das datas de input(padrão do array de input com tamanho n):
+1) array desordenado aleatoriamente
+2) array aproximadamente ordenado
+3) array com elementos repetidos
+4) array ordenado inversamente
+Algoritmo de ordenação baseados em comprações mais básicas:
+1) Comparação entre dois elementos do array
+	-> Não faz alterações no array
+2) Troca entre elementos do array
+	-> Faz alterações no array						
+SELECTION Sort(algoritmo)
+Coloca na posição 0 o menor elementos, na posição 1 o segundo menor elemento e assim sucessivamente...
+Comparações= N^2/2(não depende do melhor ou do pior caso)
+Trocas= N
+INSERTION Sort(ou card sorting)
+Coloca um a um na posição correta, verifica se á esquerda de cada elemento(i) existe um valor maior, se sim roda o elemento á esquerda
+		Melhor Caso:	Pior Caso:
+Comparações	N-1		1/2N^2
+Trocas		0		1/2N^2

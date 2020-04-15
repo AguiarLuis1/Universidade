@@ -1,0 +1,9 @@
+a)
+Sem Pipeline (800*0.25+700*0.10+600*0.50+500*0.15)=645 ps
+Com Pipeline 200 ps
+Speedup=645/200=3,225
+b)
+Não, porque o pipeline depende da fase mais lenta, não adianta melhorar apenas uma fase
+c)
+Sim, o tempo medio, com pipeline, passava a ser 250ps e sem pipeline 695ps
+Speedup=695/250=2,78

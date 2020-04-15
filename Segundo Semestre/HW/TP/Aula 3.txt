@@ -1,0 +1,81 @@
+Introduction Arduino(cont.)
+Turn on LED -> Wait -> Turn LED OFF -> Wait
+
+Microcontroller
+->MCU,uC,...
+->Electronic circuit that manages memory I/O
+
+Arduino MCU: ATMEL AVR 8bits
+->ATMEGA 328(5V)
+->Digital Pins I/O: 14(+6 - Os A's)
+->Analogical Pins: 6
+->Flash Memory: 32kb
+->Clock:16MHz
+
+Arduino API
+Processing languages
+HW abstraction
+c/c++
+
+Código:
+int led=13;//Global var
+void setup(){//Execute onces at the beginning
+	pinMode(led,OUTPUT):
+}
+void loop(){//Infinite loop
+	digitalWrite(led,HIGH);
+	delay(100);
+	(...)
+}
+
+Variable types
+
+8bits - byte, char
+16bits- int, unsigned int
+32bits- long, unsigned long, double
+
+Constants
+High|Low
+Input|Output
+True|False
+
+Decimal
+123|123U|123L|123UL
+
+Binary
+B1101
+
+Hexa
+0x9F
+
+API Arduino
+pinMode(); - serve para caraterizar o pin como entrada ou saída
+digitalWrite(); - permite escrever uma tensão num pin digital(HIGH OU LOW)
+digitalRead(); - permitie ler a tensão digital num pin digital(HIGH OU LOW)
+analogRead(); - lê tensão analógica(continua) que se encontra num pin analógico
+analogWrite(); - escreve tensão analógica(continua) que se encontra num pin DIGITAL
+delay(); - aguarda o tempo em milissegundos indicado
+millis(); - o tempo em milissegundos desde que se ligou
+
+Concepts Input vs Output
+Reference from the perspective of the MCU
+Inputs: Is a signal information going into time board
+Outputs: Is any signal exiting the board
+
+Inputs	|	Output
+Sensor		LED
+Button		Motor
+Potentiometer	7-seguement LED
+(...)		(...)
+
+HIGH
+Pin is input->digitalRead(pin)		Pin is output->digitalWrite(pin,_)
+High if:				High:
+	V>=3V(Arduino 5V)		5V(Arduino 5V)
+	V>=2V(Arduino 3,3V)		3,3V(Arduino 3,3V)
+
+LOW
+Pin is input->digitalRead(pin)		Pin is output
+Low if:					Low=0V
+	V<3V(Arduino 5V)
+	V<2V(Arduino 3,3V)

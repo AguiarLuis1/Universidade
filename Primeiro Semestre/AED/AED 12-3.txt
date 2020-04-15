@@ -1,0 +1,23 @@
+ORDENAÇÃO POR FUSÃO(MERGESORT)
+->Um array ordenado pode ser obtido mais facilmente(menos custo temporal) através da ordenação(fusão) 
+feita com base em dois arrays já ordenados
+Exemplo:
+IN
+a1[]:3,4,11,13	
+a2[]:5,7,8,10
+	|
+	|(fusão)
+	v
+a3[]:3,4,5,7,8,10,11,13
+
+Paradigma algoritmico divide-and-conquer(divisão e conquista) para resolver um problema algoritmico com
+input size N:
+1)-(DIVIDE)Divisão do input size em 2 ou mais partes(idealmente com tamanhos iguais)
+2)-(CONQUER)Conquista ou resolução do problema para cada uma destas partes
+3)-(COMBINE)Combinação das duas, ou mais, soluções numa solução global
+
+Exercício de um teste:
+Cálculo de potência(potência de 2)usando divide-and-conquer
+5^8=5^4*5^4
+5^4=5^2*5^2
+5^2=5^1*5^1

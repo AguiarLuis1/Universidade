@@ -1,0 +1,100 @@
+-----Priorities
+spanning-tree vlan 10 priority 0
+spanning-tree vlan 20 priority 0
+----VTP
+en
+conf t
+vtp mode client
+vtp domain REDES
+vtp password CISCO
+end
+wr
+---------LACP
+en
+conf t
+
+int po1
+int g0/0
+channel-group 1 mode active
+channel-protocol lacp
+
+int po1
+int g0/1
+channel-group 1 mode active
+channel-protocol lacp
+
+int po2
+int g0/2
+channel-group 2 mode active
+channel-protocol lacp
+
+int po2
+int g0/3
+channel-group 2 mode active
+channel-protocol lacp
+
+end
+wr
+
+int po3
+int g1/0
+channel-group 3 mode active
+channel-protocol lacp
+
+int po3
+int g1/1
+channel-group 3 mode active
+channel-protocol lacp
+
+int po4
+int g1/2
+channel-group 4 mode active
+channel-protocol lacp
+
+int po4
+int g1/3
+channel-group 4 mode active
+channel-protocol lacp
+
+
+
+
+-----------------Trunk P
+en
+conf t
+int po1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+int po2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+end
+wr
+
+-----IP sw
+en
+conf t
+interface vlan1
+ip address 10.100.1.5 255.255.255.0
+no shutdown
+end
+wr
+
+--------interVlan
+en 
+conf t
+int g0/0.10
+encapsulation dot1q 10
+ip address 10.100.10.254 255.255.255.0
+no shut
+int g0/0.20
+encapsulation dot1q 20
+ip address 10.100.20.254 255.255.255.0
+no shut
+int g0/0.1
+encapsulation dot1q 1
+ip address 10.100.1.254 255.255.255.0
+end
+wr

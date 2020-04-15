@@ -1,0 +1,29 @@
+Inter Process Communication
+Tipos:
+	Pipes- Unidirecional, relação hierarquica entre processos
+	Fifos- "named piped"->file systems
+	Sockets- bidirecional(Unix Domain Socket) -> Local
+		 "name" (Internet Sockets) -> Network 
+	Mem Share
+1- 
+Server
+//accept s1
+//accept s2
+//read s1
+//write s2
+//read s2
+//write s1
+
+s1
+//connect s
+//write s
+//read s 
+//print
+//exit
+
+s2
+//connect s
+//read s
+//toupper
+//write s
+//exit

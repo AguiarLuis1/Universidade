@@ -1,0 +1,6 @@
+a) São precisos 8 ciclos de relógio
+b) 
+lw
+nop
+sub
+add

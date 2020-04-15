@@ -1,0 +1,11 @@
+Aplicação do partition num array com N=16
+K R A T E L E P U I M Q C X O S(k=partitions element)
+  i                           j(procura á direita de i um elemento menor que K e á esquerda de j um elemento menor que K)
+  C                     R      (troca o C com o R)
+      i           j
+      I           T
+          i j
+          E L
+estado final: 
+E C A I E |K| L P U T M Q E X O S
+Isto repete-se mas nas sub-partes

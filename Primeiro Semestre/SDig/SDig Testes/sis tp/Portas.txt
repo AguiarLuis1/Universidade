@@ -1,0 +1,5 @@
+And(reto) - 7408 
+Nand(reto) - 7400
+Or - 7432
+Nor - 7402
+Not - 7404

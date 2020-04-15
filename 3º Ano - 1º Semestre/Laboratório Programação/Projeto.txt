@@ -1,0 +1,15 @@
+para artisan:
+vagrant ssh
+cd projeto
+php artisan migrate
+
+editar database com cmd
+mysql -u root -p
+show databases;
+
+sair:
+exit
+
+app.test/projeto/public/
+
+## mudar no ficheiro vagrant e add porta nos hosts (system32)
