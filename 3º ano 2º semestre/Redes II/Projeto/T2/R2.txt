@@ -1,0 +1,64 @@
+en
+conf t
+hostname R2
+
+int g0/0
+no shut 
+ip add 12.12.12.2 255.255.255.252
+int g0/1
+no shut 
+ip add 25.25.25.1 255.255.255.252
+int g0/2
+no shut 
+ip add 24.24.24.1 255.255.255.252
+
+int loopback 1
+ip add 2.2.2.2 255.255.255.255
+
+exit
+
+router ospf 1
+network 12.12.12.0 0.0.0.3 area 0
+network 2.2.2.2 0.0.0.0 area 0 
+
+#anunciar rota por defeito para a internet
+default-information originate
+
+#para pc1 conseguir pingar
+redistribute bgp 2860
+
+
+
+exit
+
+router bgp 2860
+neighbor 25.25.25.2 remote-as 6939
+neighbor 24.24.24.2 remote-as 174
+
+redistribute ospf 1
+
+#maior preference - mais prio
+#Deverá preferir as rotas anunciadas pelo router R3 às anunciadas pelo router R2
+bgp default local-preference 200
+
+#(maior peso tem prioridade)
+#Router R2 deve preferir as rotas anunciadas pelo router R5 às anunciadas pelo router R4
+neighbor 24.24.24.2 weight 100
+neighbor 25.25.25.2 weight 200
+
+exit
+#menor metric mais prioridade
+#O AS 6939 deve ser persuadido pelo AS 2860 a preferir as rotas do router R2 às rotas do router R3
+route-map setmetricout 
+set metric 100
+exit
+router bgp 2860
+neighbor 25.25.25.2 route-map setmetricout out
+
+#dar acesso á internet com dns da google
+ip route 0.0.0.0 0.0.0.0 25.25.25.2
+ip domain-lookup
+ip name-server 8.8.8.8
+
+end
+wr

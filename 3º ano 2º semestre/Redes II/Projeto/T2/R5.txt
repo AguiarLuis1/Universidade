@@ -1,0 +1,65 @@
+en
+conf t
+hostname R5
+
+int g0/0
+no shut 
+ip add 35.35.35.2 255.255.255.252
+int g0/1
+no shut 
+ip add 25.25.25.2 255.255.255.252
+int g0/2
+no shut 
+ip add 45.45.45.2 255.255.255.252
+
+int loopback 1
+ip add 5.5.5.5 255.255.255.255
+
+exit
+
+#prefixos reais
+router ospf 1
+network 5.152.177.0 0.0.0.255 area 0
+network 5.152.179.0 0.0.0.255 area 0
+network 5.152.181.0 0.0.0.255 area 0
+
+#anunciar rota por defeito para a internet
+default-information originate
+
+exit
+
+router bgp 6939
+neighbor 35.35.35.1 remote-as 2860
+neighbor 25.25.25.1 remote-as 2860
+neighbor 45.45.45.1 remote-as 174
+network 5.5.5.5 mask 255.255.255.255
+
+#para redistribuir os prefixos reais
+redistribute ospf 1
+
+end
+
+#configuar internet
+conf t 
+int g0/3
+no shut
+ip add dhcp
+ip route 0.0.0.0 0.0.0.0 192.168.122.1
+
+#configurar nat com pat 
+access-list 1 permit any
+
+ip nat inside source list 1 interface g0/3 overload
+
+int g0/0 
+ip nat inside
+int g0/1 
+ip nat inside
+int g0/2 
+ip nat inside
+int g0/3
+ip nat outside
+
+
+end
+wr

@@ -1,0 +1,62 @@
+!comandos
+sh ip bgp neighbors
+sh ip route bgp
+sh run | bgp
+clear ip bgp * #formar update
+
+!SanJose3
+en
+conf t
+router bgp 100 
+#100 por causa de ser o AS100
+neighbor 10.0.0.1 remote-as 200
+neighbor 172.16.0.1 remote-as 300
+network 192.168.0.0 mask 255.255.255.0 
+network 192.168.1.0 mask 255.255.255.0 
+
+exit
+
+#access-list que apenas permites os lo's
+ip access-list standard 1
+permit 192.168.0.0 0.0.1.255
+
+router bgp 100
+neighbor 10.0.0.1 distribute-list 1 out
+neighbor 172.16.0.1 distribute-list 1 out
+
+end 
+
+
+#apenas aceita transmissões que tenha destino SJ3
+conf t
+ip access-list extended 100
+permit ip any 192.168.0.0 0.0.1.255
+#permitir transmissões do bgp senão são negadas pelo implicit deny
+permit tcp host 10.0.0.1 host 10.0.0.2 eq bgp
+permit tcp host 172.16.0.1 host 172.16.0.2 eq bgp
+
+exit
+int g0/0
+ip access-group 100 in
+int g0/1
+ip access-group 100 in
+
+
+!ISP1
+en
+conf t
+router bgp 200
+neighbor 10.0.0.2 remote-as 100
+#divulgar a rede
+network 12.0.1.0 mask 255.255.255.0 
+
+#para conseguir fazer ping
+ping 172.16.1.1 souce lo0 #para ter origem lo0
+
+!ISP2
+en
+conf t
+router bgp 300
+neighbor 172.16.0.2 remote-as 100
+#divulgar a rede
+network 172.16.1.0 mask 255.255.255.0 

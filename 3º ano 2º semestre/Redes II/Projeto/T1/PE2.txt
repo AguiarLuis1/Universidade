@@ -1,0 +1,81 @@
+en
+conf t 
+
+hostname PE2
+
+int g0/0
+ip add 13.13.13.2 255.255.255.252
+no shut 
+
+#lo para possuir etiqueta até ao pe
+int loopback0
+ip add 3.3.3.3 255.255.255.255
+no shut
+
+exit
+#4
+router ospf 1 
+network 13.13.13.0 0.0.0.3 area 0
+network 3.3.3.3 0.0.0.0 area 0
+
+exit
+
+mpls ip
+ip cef
+mpls label protocol ldp
+
+int g0/0
+mpls ip
+
+exit
+
+ip vrf tap
+rd 2860:1
+route-target export 2860:1
+route-target import 2860:1
+int g0/1
+ip vrf forwarding tap
+ip add 33.33.33.1 255.255.255.0
+no shut
+
+exit
+
+router ospf 3 vrf tap
+router-id 33.33.33.200
+int g0/1
+ip ospf 3 area 0
+
+exit
+
+ip vrf ufp
+rd 2860:2
+route-target export 2860:2
+route-target import 2860:2
+int g0/2
+ip vrf forwarding ufp
+ip add 33.33.33.1 255.255.255.0
+no shut
+
+exit
+
+router ospf 2 vrf ufp
+router-id 33.33.33.100
+int g0/2
+ip ospf 2 area 0
+
+exit
+
+router bgp 2860
+neighbor 2.2.2.2 remote-as 2860
+neighbor 2.2.2.2 update-source lo0
+address-family vpnv4
+neighbor 2.2.2.2 activate
+neighbor 2.2.2.2 send-community extended
+address-family ipv4 vrf tap
+redistribute ospf 3
+address-family ipv4 vrf ufp
+redistribute ospf 2
+
+
+end
+wr

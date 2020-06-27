@@ -1,0 +1,35 @@
+en
+conf t
+
+hostname SEDE2
+
+int g0/0
+ip add 192.168.1.250 255.255.255.252
+no shut
+
+int g0/1
+ip add 192.168.1.254 255.255.255.252
+no shut
+
+int g0/2
+ip add 192.168.1.129 255.255.255.192
+no shut
+
+int g0/2
+ip helper-address 192.168.1.253
+
+end
+conf t
+
+router rip
+version 2
+no auto-summary 
+
+network 192.168.1.248
+network 192.168.1.128
+network 192.168.1.252
+
+passive-interface g0/2
+
+end
+wr

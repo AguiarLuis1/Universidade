@@ -1,0 +1,86 @@
+en
+conf t
+
+hostname PE1
+
+int g0/0
+ip add 12.12.12.2 255.255.255.252
+no shut
+
+#lo para possuir etiqueta até ao pe
+int loopback0
+ip add 2.2.2.2 255.255.255.255
+no shut
+
+exit
+#4
+router ospf 1 
+network 12.12.12.0 0.0.0.3 area 0
+network 2.2.2.2 0.0.0.0 area 0
+
+exit
+
+mpls ip
+ip cef
+mpls label protocol ldp
+
+int g0/0
+mpls ip
+
+exit
+
+ip vrf bpi
+rd 2860:1
+route-target export 2860:1
+route-target import 2860:1
+int g0/2
+ip vrf forwarding bpi
+ip add 22.22.22.1 255.255.255.0
+no shut
+
+exit
+
+router ospf 3 vrf bpi
+router-id 22.22.22.100
+int g0/2
+ip ospf 3 area 0
+
+exit
+
+ip vrf ufp
+rd 2860:2
+route-target export 2860:2
+route-target import 2860:2
+int g0/1
+ip vrf forwarding ufp
+ip add 22.22.22.1 255.255.255.0
+no shut
+
+exit
+
+router ospf 2 vrf ufp
+router-id 22.22.22.200
+int g0/1
+ip ospf 2 area 0
+
+exit
+
+#permitir que as comunicações de ip possuam labels até os pe, rederindonos aos
+#nosso vizinhos através das nossas etiquetas
+router bgp 2860
+neighbor 3.3.3.3 remote-as 2860
+neighbor 3.3.3.3 update-source lo0
+address-family vpnv4
+neighbor 3.3.3.3 activate
+neighbor 3.3.3.3 send-community extended
+address-family ipv4 vrf bpi
+redistribute ospf 3
+address-family ipv4 vrf ufp
+redistribute ospf 2
+#distribuir as rotas internas do tipo 2
+redistribute ospf 2 match internal external 2
+
+
+
+end
+wr

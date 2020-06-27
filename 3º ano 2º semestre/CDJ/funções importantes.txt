@@ -1,0 +1,6 @@
+Phaser.Game - Definições iniciais (tamanho da pagina, etc...)
+Phaser.Scene -  lógica do jogo
+	->preload() - carrega um objeto no jogo
+	->create() - cria/desenha um objeto no jogo
+	->update() - responsável pela lógica do jogo
+

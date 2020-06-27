@@ -1,0 +1,16 @@
+en 
+conf t
+
+ip access-list extended NAT
+permit ip 192.168.10.0 0.0.0.255 any
+permit ip 192.168.11.0 0.0.0.255 any
+
+
+//ips em que pode ser traduzido para o outside
+ip nat pool MY_POOL 209.165.200.241 209.165.200.246 netmask 255.255.255.248
+
+ip nat inside source list NAT pool MY_POOL
+
+//indicar que g0/0 está inside
+int g0/0
+ip nat inside

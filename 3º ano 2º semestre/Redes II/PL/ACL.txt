@@ -1,0 +1,30 @@
+BR1
+
+en
+conf t
+int g0/3
+ip add 2.2.2.1 255.255.255.0
+exit
+ip route 1.1.1.0 255.255.255.0 12.12.12.1
+
+
+HQ - routes
+ip route 2.2.2.0 255.255.255.0 12.12.12.2 #12.12.12.2 próxima porta para aceder á rede
+ip route 3.3.3.0 255.255.255.0 12.12.12.2
+ip route 0.0.0.0 0.0.0.0 13.13.13.2 #saida default
+
+Impedir que todas as Lans de branch1 comunicar com dispositivos de HQ
+
+!BR1
+en
+conf t
+ip access-list extended 100
+deny ip 2.2.2.0 0.0.0.255#origem 1.1.1.0 0.0.0.255#destino log #0.0.0.255=wildcard ou mascara invertida
+deny ip 3.3.3.0 0.0.0.255#origem 1.1.1.0 0.0.0.255 log
+permit ip any any #anular o implicit deny, se ñ permitirmos recusa todos
+exit
+int g0/3
+ip access-group 100 in
+
+permit tcp any any 80
+

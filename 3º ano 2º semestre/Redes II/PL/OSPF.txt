@@ -1,0 +1,62 @@
+#cmd
+sh ip ospf neighbor
+sh ip route ospf
+
+#R1
+en
+conf t
+router ospf 1 
+
+network 192.168.10.0 0.0.0.3 area 0 #wildcard
+network 172.16.1.16 0.0.0.15 area 0 
+network 192.168.10.4 0.0.0.3 area 0
+
+end
+wr
+
+
+#R2
+en
+conf t
+router ospf 1 
+
+network 192.168.10.0 0.0.0.3 area 0
+network 10.10.10.0 0.0.0.255 area 0
+network 192.168.10.8 0.0.0.3 area 0
+
+end
+wr
+
+#R3
+en
+conf t
+router ospf 1 
+
+network 192.168.10.4 0.0.0.3 area 0
+network 172.16.1.32 0.0.0.7 area 0
+network 192.168.10.8 0.0.0.3 area 0
+
+end
+wr
+
+#mudar id do router R1 no show ip ospf neighbor
+router ospf 1
+router-id 10.4.4.4
+clear ospf process #atualizar
+
+
+#definir uma interface loopback ou virtual em R1
+int loopback 0
+ip add 10.1.1.1 255.255.255.255
+
+
+#anunciar este loopback para ser possível pingar
+network 10.1.1.1 0.0.0.0
+
+#nova int virtual ver final da ficha
+int loopback1
+ip add 172.30.1.1 255.255.255.252
+ip route 0.0.0.0 0.0.0.0 loopback1
+
+
+

@@ -1,0 +1,16 @@
+Converter o ip 
+Local: 192.168.20.254
+Global: 209.165.200.254
+
+Esta conversão é feita no router que tem ligação com o exterior
+
+NAT estático
+en
+conf t
+ip nat inside source static 192.168.20.254 209.165.200.254
+int g0/1
+ip nat inside #interface inside
+int g0/2
+ip nat outside #interface outside 
+end
+

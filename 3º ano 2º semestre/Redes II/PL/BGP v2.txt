@@ -1,0 +1,109 @@
+-> 1) Preferir as rotas anunciadas pela MEO às anunciadas pela NOS no router PORTO
+	Usar peso (maior peso tem prioridade)
+-> 2) Preferir as rotas aprendidas pelo router PORTO no AS13200
+	Local-Preference (porque estão no mesmo mesmo AS)
+-> 3) Preferir PORTO a LISBOA na NOS
+	MED (porque supostamente não se tem acesso a routers fora da nossa AS)
+
+#fazer reset no bgp
+clear ip bgp *
+
+########################LISBOA#######################
+en
+conf t
+
+router rip
+version 2
+no auto-summary
+#anunciar todas as redes que tem ligadas
+network 0.0.0.0
+
+router bgp 13200
+neighbor 10.0.0.1 remote-as 2860
+neighbor 192.168.3.2 remote-as 13200
+#tudo que lisboa aprender via RIP, vai injetar via BGP
+redistribute rip
+#2
+bgp default local-preference 100
+
+exit
+
+#3
+route-map setmetricout 
+set metric 200
+exit
+router bgp 13200
+neighbor 10.0.0.1 route-map setmetricout out
+
+end 
+wr
+
+
+########################PORTO#######################
+en
+conf t
+
+router rip 
+version 2
+no auto-summary
+#anunciar todas as redes que tem ligadas
+network 0.0.0.0 
+
+router bgp 13200
+neighbor 10.0.1.1 remote-as 2860
+neighbor 192.168.3.1 remote-as 13200
+neighbor 172.16.0.1 remote-as 3243
+
+#1
+neighbor 10.0.1.1 weight 100
+neighbor 172.16.0.1 weight 200
+
+#tudo que porto aprender via RIP, vai injetar via BGP
+redistribute rip
+#2
+bgp default local-preference 200
+
+exit
+
+#3
+route-map setmetricout 
+set metric 100
+exit
+router bgp 13200
+neighbor 10.0.1.1 route-map setmetricout out
+
+end 
+wr
+
+
+############################NOS#######################
+en
+conf t
+
+router bgp 2860
+neighbor 10.0.0.2 remote-as 13200
+neighbor 10.0.1.2 remote-as 13200
+neighbor 200.100.0.2 remote-as 3243
+#distribuir a rota para a loopback
+network 12.0.1.0 mask 255.255.255.0
+
+
+end 
+wr
+
+
+########################MEO#######################
+en
+conf t
+
+router bgp 3243
+neighbor 172.16.0.2 remote-as 13200
+neighbor 200.100.0.1 remote-as 2860
+#anunciar o lo
+network 172.16.1.0 mask 255.255.255.0
+
+
+
+end 
+wr
+	

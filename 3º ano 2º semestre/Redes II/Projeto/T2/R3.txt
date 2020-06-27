@@ -1,0 +1,65 @@
+en
+conf t
+hostname R3
+
+int g0/0
+no shut 
+ip add 13.13.13.2 255.255.255.252
+int g0/1
+no shut 
+ip add 35.35.35.1 255.255.255.252
+
+int loopback 1
+ip add 3.3.3.3 255.255.255.255
+
+exit
+
+router ospf 1
+network 13.13.13.0 0.0.0.3 area 0
+network 3.3.3.3 0.0.0.0 area 0
+
+#prefixos reais
+network 79.168.0.0 0.0.63.255 area 0
+network 79.168.64.0 0.0.63.255 area 0
+network 79.168.128.0 0.0.63.255 area 0
+
+#anunciar rota por defeito para a internet
+default-information originate
+
+#para pc1 conseguir pingar
+redistribute bgp 2860
+
+
+exit
+
+router bgp 2860
+neighbor 35.35.35.2 remote-as 6939
+#maior preference - mais prio
+#Deverá preferir as rotas anunciadas pelo router R3 às anunciadas pelo router R2
+bgp default local-preference 100
+
+redistribute ospf 1
+
+exit
+
+#menor metric mais prioridade
+#O AS 6939 deve ser persuadido pelo AS 2860 a preferir as rotas do router R2 às rotas do router R3
+route-map setmetricout 
+set metric 200
+exit
+router bgp 2860
+neighbor 35.35.35.2 route-map setmetricout out
+
+#dar acesso á internet com dns da google
+ip route 0.0.0.0 0.0.0.0 35.35.35.2
+ip domain-lookup
+ip name-server 8.8.8.8
+
+#dar acesso á internet com dns da google
+ip route 0.0.0.0 0.0.0.0 35.35.35.2
+ip domain-lookup
+ip name-server 8.8.8.8
+
+
+end
+wr

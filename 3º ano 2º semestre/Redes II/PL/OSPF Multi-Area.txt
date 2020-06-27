@@ -1,0 +1,46 @@
+!sanjose3
+#só se divulga as redes internas
+
+en
+conf t
+router ospf 1
+network 192.168.1.0 0.0.0.255 area 0
+network 192.168.224.0 0.0.0.3 area 51
+#divulgar a rede de Lo0
+network 192.168.3.0 0.0.0.255 area 0
+
+#Configurar uma rota estática como se fosse uma rota externa
+!singapura
+en
+conf t
+ip route 192.168.248.0 255.255.255.0 null0
+router ospf 1
+#restribui rotas estáticas se em vez de static fosse rip distribuia routes rip
+redistribute static metric-type 1
+
+
+!sanjose1
+
+en
+conf t
+router ospf 1 
+#anunciar um range de ips
+area 1 range 192.168.64.0 255.255.192.0 
+
+end
+
+en
+conf t 
+#criar um loopback
+int lo5 
+ip add 10.0.0.6 255.255.255.252
+
+exit
+
+router ospf 1
+#divulgar uma rota estática por defeito (always - mesmo sem esta existir)
+#rota por defeito é uma rota para o exterior
+default-information originate always
+
+
+

@@ -1,0 +1,6 @@
+PC1
+Tabela encaminhamento
+
+Rede a atingir	|Interface ou próximo salto
+190.0.8.0/21	|eth0
+0.0.0.0/0	|190.0.15.254

@@ -1,0 +1,32 @@
+1 Resumo do projeto (introdução)
+	1.1 Enquadramento/aplicação no mundo real
+	1.2 Objetivo do projeto 
+		1.1.1 Objetivo do projeto
+		1.1.2 Objetivo didático pessoal
+
+
+2 O que é machine learning/aplicação do deep learning no âmbito da visão computacional?
+	2.1 Escolha entre image detection e image classification (Falar de Yolo, SSD ...)
+	
+
+3 Implementação (Fases de desenvolvimento)
+	3.0 Introdução ao caso de uso (o que é preciso)
+	3.1 Fase de análise e escolha de uma estrutura de rede
+		3.1.2 O porquê do SmallVGGNet
+	3.2 Fase de recolha de dataset
+	3.3 Fase de treino da rede
+	3.4 Fase de análise da rede e aplicação em imagens (aplicação de pipeline)
+	3.5 Migração e aplicação do modelo em vídeo
+
+4 Avaliação do modelo
+
+5 Conclusão
+
+Logbook (anexo)
+Guia de instalação (anexo)
+
+Meter label primeira linha txt
+
+
+http://www.ccg.pt/visao-por-computador/
+

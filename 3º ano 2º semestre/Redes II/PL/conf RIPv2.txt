@@ -1,0 +1,17 @@
+//mete todos os routers a comunicar routing entre si (um router diz aos seus vizinhos 
+que lans estão diretamente ligadas a este)
+
+Configurar ip's...
+
+//para todos os routers
+//em r2 
+en
+conf t
+router rip
+version 2 //para o v2
+no auto-summary 
+
+//divulgar também as em comum
+network 192.168.6.0//network <prefixo da rede que se quer divulgar>
+
+network 192.168.4.0

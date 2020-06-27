@@ -1,0 +1,214 @@
+#R1
+
+en
+conf t
+hostname R1
+int g0/0
+no shut
+ip add 12.12.12.1 255.255.255.252
+int g0/1
+no shut
+ip add 16.16.16.1 255.255.255.252
+int g0/2
+no shut
+ip add 17.17.17.1 255.255.255.252
+
+end
+conf t
+router ospf 1
+network 16.16.16.0 255.255.255.252 area 0
+network 12.12.12.0 255.255.255.252 area 0
+network 17.17.17.0 255.255.255.252 area 0
+
+end
+wr
+
+#R2
+
+en
+conf t
+hostname R2
+int g0/0
+no shut
+ip add 12.12.12.2 255.255.255.252
+
+end
+conf t
+router ospf 1
+network 12.12.12.0 255.255.255.252 area 0
+
+end
+wr
+
+#R3
+
+en
+conf t
+hostname R3
+int g0/0
+no shut
+ip add 36.36.36.1 255.255.255.252
+
+end
+conf t
+router ospf 1
+area 1 stub
+network 36.36.36.0 255.255.255.252 area 1
+
+end
+wr
+
+
+#R4
+
+en
+conf t
+hostname R4
+int g0/0
+no shut
+ip add 46.46.46.1 255.255.255.252
+int g0/1
+no shut
+ip add 48.48.48.1 255.255.255.252
+
+end
+conf t
+router ospf 1
+area 2 nssa
+network 46.46.46.0 255.255.255.252 area 2
+network 48.48.48.0 255.255.255.252 area 2
+
+end
+wr
+
+
+#R5
+
+en
+conf t
+hostname R5
+int g0/0
+no shut
+ip add 57.57.57.1 255.255.255.252
+int g0/1
+no shut
+ip add 59.59.59.1 255.255.255.252
+
+end
+conf t
+router ospf 1
+area 3 nssa
+network 57.57.57.0 255.255.255.252 area 3
+network 59.59.59.0 255.255.255.252 area 3
+
+end
+wr
+
+
+#R6
+
+en
+conf t
+hostname R6
+int g0/0
+no shut
+ip add 46.46.46.2 255.255.255.252
+int g0/1
+no shut
+ip add 16.16.16.2 255.255.255.252
+int g0/2
+no shut
+ip add 36.36.36.2 255.255.255.252
+
+end
+conf t
+router ospf 1
+
+area 1 stub no-summary 
+area 2 nssa
+
+network 16.16.16.0 255.255.255.252 area 0
+network 36.36.36.0 255.255.255.252 area 1
+network 46.46.46.0 255.255.255.252 area 2
+
+end
+wr
+
+
+
+#R7
+
+en
+conf t
+hostname R7
+int g0/0
+no shut
+ip add 57.57.57.2 255.255.255.252
+int g0/1
+no shut
+ip add 17.17.17.2 255.255.255.252
+
+end
+conf t
+router ospf 1
+
+area 3 nssa
+
+network 17.17.17.0 255.255.255.252 area 0
+network 57.57.57.0 255.255.255.252 area 3
+
+
+
+end
+wr
+
+
+
+#R8
+
+en
+conf t
+hostname R8
+int g0/1
+no shut
+ip add 48.48.48.2 255.255.255.252
+int lo0
+ip add 8.8.8.8 255.255.255.255
+
+end
+conf t
+router ospf 1
+redistribute connected subnets
+
+area 2 nssa
+
+network 48.48.48.0 255.255.255.252 area 2
+
+
+end
+wr
+
+
+
+#R9
+
+en
+conf t
+hostname R9
+int g0/1
+no shut
+ip add 59.59.59.2 255.255.255.252
+int lo0
+ip add 9.9.9.9 255.255.255.255
+
+end
+conf t
+router ospf 1
+redistribute connected subnets
+
+area 3 nssa
+
+network 59.59.59.0 255.255.255.252 area 3
+
+end
+wr

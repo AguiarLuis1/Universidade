@@ -1,0 +1,1 @@
+Ip route <net_prefix da rede para aceder> <net_mask da rede para aceder> <ip da porta de entrada no proximo router>

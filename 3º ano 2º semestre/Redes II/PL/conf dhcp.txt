@@ -1,0 +1,28 @@
+configurar dhcp
+en 
+conf t
+
+#excluir o espaço de ips da geração automatica do dhcp
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.11.1 192.168.11.10
+
+ip dhcp pool R1G0
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+dns-server 192.168.10.5
+
+ip dhcp pool R1G1
+network 192.168.11.0 255.255.255.0
+default-router 192.168.11.1
+dns-server 192.168.11.5
+
+
+end
+wr
+
+Indica no router para quem reenviar os DHCP's que recebe nas suas portas (nos rotuer que não são os do DHCP)
+
+int g0/0 
+ip helper-address (ip porta do router)
+int g0/1
+ip helper-address (ip porta do router)

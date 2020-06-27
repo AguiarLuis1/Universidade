@@ -1,0 +1,127 @@
+en
+conf t
+
+hostname CE1
+
+int g0/0
+ip add 192.168.1.245 255.255.255.252
+no shut
+
+int g0/1
+ip add 192.168.1.253 255.255.255.252
+no shut
+
+int g0/2
+ip add 192.168.1.193 255.255.255.224
+no shut
+
+int g0/3
+ip add 22.22.22.2 255.255.255.0
+no shut
+
+end
+conf t
+
+ip dhcp excluded-address 192.168.1.1 192.168.1.10
+ip dhcp excluded-address 192.168.1.129 192.168.1.138
+ip dhcp excluded-address 192.168.1.193 192.168.1.202
+
+ip dhcp pool R1G0
+network 192.168.1.0 255.255.255.128
+default-router 192.168.1.1
+
+ip dhcp pool R1G1
+network 192.168.1.128 255.255.255.192
+default-router 192.168.1.129
+
+ip dhcp pool R1G2
+network 192.168.1.192 255.255.255.224
+default-router 192.168.1.193
+
+end
+conf t
+
+router rip
+version 2
+no auto-summary
+
+network 192.168.1.244
+network 192.168.1.252
+network 192.168.1.192
+
+passive-interface g0/2
+
+end
+conf t
+
+
+ip access-list extended NAT
+deny ip 192.168.1.0 0.0.0.255 172.12.0.0 0.0.0.3
+permit ip 192.168.1.0 0.0.0.255 any
+
+ip nat inside source list NAT interface g0/3 overload
+
+int g0/0 
+ip nat inside
+int g0/1 
+ip nat inside
+int g0/2 
+ip nat inside
+int g0/3
+ip nat outside
+
+end
+conf t
+
+#impedir acesso externo para os dispositivos da LAN1 de SEDE1 (Deve continuar a comunicar com PC4)
+ip access-list extended 100
+#permitir acesso a pc4
+permit ip 192.168.1.0 0.0.0.127 172.12.0.0 0.0.0.3
+#negar acesso ao exterior a LAN1
+deny ip 192.168.1.0 0.0.0.127 any
+permit ip any any
+
+exit
+
+int g0/3
+ip access-group 100 out
+
+exit
+#impedir acessos a ping (ICMP) e Telnet (TCP:23) PARA o servidor PC3
+ip access-list extended 101
+#negar icmp com destino PC3
+deny icmp any 192.168.1.194 0.0.0.0
+#negar telnet com destino PC3
+deny tcp any 192.168.1.194 0.0.0.0 eq 23
+#atenção ao deny implicito que dá deny ás comunicações ip
+permit ip any any
+
+exit
+
+int g0/2
+ip access-group 101 out
+
+#apenas PC4 pode aceder ao servidor web de PC3 (negar aos outros só PC3)
+ip access-list extended 102
+#permitir para pc3 ao pc4
+permit ip 172.12.0.2 0.0.0.0 192.168.1.194 0.0.0.0
+#negar acesso a pc 3 para todos os outros
+deny ip any 192.168.1.194 0.0.0.0
+permit ip any any
+
+exit
+
+int g0/2
+ip access-group 102 out
+
+end 
+conf t
+
+#4 
+ip route 0.0.0.0 0.0.0.0 22.22.22.1 
+router ospf 1
+network 22.22.22.0 0.0.0.255 area 0
+redistribute rip
+
+end
+wr

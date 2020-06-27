@@ -1,0 +1,33 @@
+en
+conf t
+
+hostname P1
+
+int g0/0
+ip add 12.12.12.1 255.255.255.252
+no shut
+
+int g0/1
+ip add 13.13.13.1 255.255.255.252
+no shut
+
+exit
+
+#4
+router ospf 1 
+network 12.12.12.0 0.0.0.3 area 0
+network 13.13.13.0 0.0.0.3 area 0
+
+exit
+
+mpls ip
+ip cef
+mpls label protocol ldp
+
+int g0/0
+mpls ip
+int g0/1
+mpls ip
+
+end
+wr

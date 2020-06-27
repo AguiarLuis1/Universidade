@@ -1,0 +1,27 @@
+en
+conf t
+
+hostname CE2
+
+int g0/0
+ip add 22.22.22.2 255.255.255.0
+no shut
+
+int g0/1
+ip add 172.20.0.1 255.255.255.252
+no shut
+
+exit
+
+end 
+conf t
+#4 - comunicar com o pe e receber ping's no pc
+ip route 0.0.0.0 0.0.0.0 22.22.22.1
+router ospf 1 
+network 172.10.0.0 0.0.0.3 area 0
+
+
+
+
+end
+wr

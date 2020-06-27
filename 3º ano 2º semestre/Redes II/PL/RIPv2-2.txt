@@ -1,0 +1,28 @@
+en
+conf t
+
+router rip
+version 2
+#remove a auto-somarização
+no auto-summary
+#networks que tem ligação
+network 1.1.1.0
+network 1.1.1.128
+network 12.12.12.0
+
+end
+wr
+
+
+#não divulgar para uma determinada interface (util se nunca fôr ter um router)
+en
+conf t
+
+router rip
+passive-interface g0/0
+passive-interface default #deixa de anunciar em todas as interfaces
+#manda pelo rip as rotas por defeito ou estáticas
+default-information originate
+
+end
+wr

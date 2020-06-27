@@ -1,0 +1,12 @@
+#ssh
+
+ssh gns3@<ip_gns3vm>
+
+nano Dockerfile
+<ctrl+k> => recorta linha
+#cola conteudo do Dockerfile da plataforma
+
+docker build -t <nome_imagem> .
+
+#para remover uma imagem
+docker rmi <nome_imagem>

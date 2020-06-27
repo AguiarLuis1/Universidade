@@ -1,0 +1,9 @@
+RIP -> Tem um nº máximo de saltos de 16
+
+OSPF -> Consegue lidar com redes maiores, porém exige mais do router
+	Usa o Djikstra para calcular o menor caminho
+
+Custo é determinado:
+Rip - Nº de saltos
+
+OSPF - Velocidade da ligação

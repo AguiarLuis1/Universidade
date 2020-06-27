@@ -1,0 +1,39 @@
+en
+conf t
+hostname R6
+
+int g0/0
+no shut
+ip add 46.46.46.2 255.255.255.252
+
+int loopback 1
+ip add 6.6.6.6 255.255.255.255
+
+exit
+
+#prefixos reais
+router ospf 1
+network 4.7.141.0 0.0.0.255 area 0
+network 4.14.217.0 0.0.0.255 area 0
+network 4.22.42.0 0.0.0.255 area 0
+#anunciar rota por defeito para a internet
+default-information originate
+
+exit
+
+router bgp 3356
+neighbor 46.46.46.1 remote-as 174
+network 6.6.6.6 mask 255.255.255.255
+
+#para redistribuir os prefixos reais
+redistribute ospf 1
+
+exit
+
+#dar acesso á internet com dns da google
+ip route 0.0.0.0 0.0.0.0 46.46.46.1
+ip domain-lookup
+ip name-server 8.8.8.8
+
+end
+wr
